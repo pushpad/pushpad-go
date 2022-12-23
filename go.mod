@@ -1,3 +1,3 @@
-module github.com/pushpad/pushpad-go/v0
+module github.com/pushpad/pushpad-go
 
 go 1.19
