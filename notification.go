@@ -27,7 +27,7 @@ type Notification struct {
   Tags []string `json:"tags"`
 }
 
-func (n Notification) Broadcast() (string, error) {
+func (n Notification) Send() (string, error) {
   if n.ProjectID == "" {
     n.ProjectID = pushpadProjectID
   }
