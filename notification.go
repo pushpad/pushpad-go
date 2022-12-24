@@ -13,11 +13,11 @@ type Notification struct {
   ProjectID string `json:"-"`
   Body string `json:"body"`
   Title string `json:"title,omitempty"`
-  TargetUrl string `json:"target_url,omitempty"`
-  IconUrl string `json:"icon_url,omitempty"`
-  BadgeUrl string `json:"badge_url,omitempty"`
-  ImageUrl string `json:"image_url,omitempty"`
-  Ttl int `json:"ttl,omitempty"`
+  TargetURL string `json:"target_url,omitempty"`
+  IconURL string `json:"icon_url,omitempty"`
+  BadgeURL string `json:"badge_url,omitempty"`
+  ImageURL string `json:"image_url,omitempty"`
+  TTL int `json:"ttl,omitempty"`
   RequireInteraction bool `json:"require_interaction,omitempty"`
   Silent bool `json:"silent,omitempty"`
   Urgent bool `json:"urgent,omitempty"`
@@ -25,14 +25,14 @@ type Notification struct {
   CustomMetrics []string `json:"custom_metrics,omitempty"`
   Starred bool `json:"starred,omitempty"`
   SendAt *time.Time `json:"send_at,omitempty"`
-  Uids []string `json:"uids"`
+  UIDs []string `json:"uids"`
   Tags []string `json:"tags"`
 }
 
 type NotificationResponse struct {
   ID int `json:"id"`
   Scheduled int `json:"scheduled"`
-  Uids []string `json:"uids"`
+  UIDs []string `json:"uids"`
   SendAt time.Time `json:"send_at"`
 }
 
