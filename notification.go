@@ -56,10 +56,6 @@ func (n Notification) Broadcast() (string, error) {
   
   defer res.Body.Close()
   
-  if res.StatusCode != 201 {
-    return "", fmt.Errorf("HTTP status code was %d", res.StatusCode)
-  }
-  
   bodyBytes, err := io.ReadAll(res.Body)
   
   if err != nil {
@@ -67,6 +63,10 @@ func (n Notification) Broadcast() (string, error) {
   }
   
   bodyString := string(bodyBytes)
+  
+  if res.StatusCode != 201 {
+    return "", fmt.Errorf("Response was HTTP %d: %s", res.StatusCode, bodyString)
+  }
   
   return bodyString, nil
 }
