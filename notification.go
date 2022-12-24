@@ -6,6 +6,7 @@ import (
   "io"
   "encoding/json"
   "net/http"
+  "time"
 )
 
 type Notification struct {
@@ -23,6 +24,7 @@ type Notification struct {
   CustomData string `json:"custom_data,omitempty"`
   CustomMetrics []string `json:"custom_metrics,omitempty"`
   Starred bool `json:"starred,omitempty"`
+  SendAt *time.Time `json:"send_at,omitempty"`
   Uids []string `json:"uids"`
   Tags []string `json:"tags"`
 }
