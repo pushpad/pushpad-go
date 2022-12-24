@@ -29,7 +29,14 @@ type Notification struct {
   Tags []string `json:"tags"`
 }
 
-func (n Notification) Send() (string, error) {
+type NotificationResponse struct {
+  ID int `json:"id"`
+  Scheduled int `json:"scheduled"`
+  Uids []string `json:"uids"`
+  SendAt time.Time `json:"send_at"`
+}
+
+func (n Notification) Send() (*NotificationResponse, error) {
   if n.ProjectID == "" {
     n.ProjectID = pushpadProjectID
   }
@@ -37,13 +44,13 @@ func (n Notification) Send() (string, error) {
   notificationJSON, err := json.Marshal(n)
   
   if err != nil {
-    return "", err
+    return nil, err
   }
   
   req, err := http.NewRequest("POST", "https://pushpad.xyz/api/v1/projects/" + n.ProjectID + "/notifications", bytes.NewBuffer(notificationJSON))
   
   if err != nil {
-    return "", err
+    return nil, err
   }
   
   req.Header.Set("Content-Type", "application/json")
@@ -55,7 +62,7 @@ func (n Notification) Send() (string, error) {
   res, err := client.Do(req)
   
   if err != nil {
-    return "", err
+    return nil, err
   }
   
   defer res.Body.Close()
@@ -63,14 +70,17 @@ func (n Notification) Send() (string, error) {
   bodyBytes, err := io.ReadAll(res.Body)
   
   if err != nil {
-    return "", err
+    return nil, err
   }
   
   bodyString := string(bodyBytes)
   
   if res.StatusCode != 201 {
-    return "", fmt.Errorf("Response was HTTP %d: %s", res.StatusCode, bodyString)
+    return nil, fmt.Errorf("Response was HTTP %d: %s", res.StatusCode, bodyString)
   }
   
-  return bodyString, nil
+  var r *NotificationResponse
+  json.Unmarshal(bodyBytes, &r)
+    
+  return r, nil
 }
