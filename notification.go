@@ -23,6 +23,8 @@ type Notification struct {
   CustomData string `json:"custom_data,omitempty"`
   CustomMetrics []string `json:"custom_metrics,omitempty"`
   Starred bool `json:"starred,omitempty"`
+  Uids []string `json:"uids"`
+  Tags []string `json:"tags"`
 }
 
 func (n Notification) Broadcast() (string, error) {
