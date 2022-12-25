@@ -68,14 +68,14 @@ n := pushpad.Notification {
   CustomMetrics: []string{"examples", "another_metric"}, // up to 3 metrics per notification
 }
 
-res, err = n.Send()
+res, err := n.Send()
 
 // TARGETING:
 // You can use UIDs and Tags for sending the notification only to a specific audience...
 
 // deliver to a user
 n := pushpad.Notification { Body: "Hi user1", UIDs: []string{"user1"} }
-res, err = n.Send()
+res, err := n.Send()
 
 // deliver to a group of users
 n := pushpad.Notification { Body: "Hi users", UIDs: []string{"user1","user2","user3"} }
