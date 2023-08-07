@@ -51,21 +51,47 @@ fmt.Printf("User ID Signature: %s", s)
 
 ```go
 n := pushpad.Notification {
+  // required, the main content of the notification
   Body: "Hello world!",
-  Title: "Website Name", // optional, defaults to your project name
-  TargetURL: "https://example.com", // optional, defaults to your project website
-  IconURL: "https://example.com/assets/icon.png", // optional, defaults to the project icon
-  BadgeURL: "https://example.com/assets/badge.png", // optional, defaults to the project badge
-  ImageURL: "https://example.com/assets/image.png", // optional, an image to display in the notification content
-  TTL: 604800, // optional, drop the notification after this number of seconds if a device is offline
-  RequireInteraction: true, // optional, prevent Chrome on desktop from automatically closing the notification after a few seconds
-  Silent: false, // optional, enable this option if you want a mute notification without any sound
-  Urgent: false, // optional, enable this option only for time-sensitive alerts (e.g. incoming phone call)
-  CustomData: "123", // optional, a string that is passed as an argument to action button callbacks
-  Starred: true, // optional, bookmark the notification in the Pushpad dashboard (e.g. to highlight manual notifications)
+
+  // optional, the title of the notification (defaults to your project name)
+  Title: "Website Name",
+
+  // optional, open this link on notification click (defaults to your project website)
+  TargetURL: "https://example.com",
+
+  // optional, the icon of the notification (defaults to the project icon)
+  IconURL: "https://example.com/assets/icon.png",
+
+  // optional, the small icon displayed in the status bar (defaults to the project badge)
+  BadgeURL: "https://example.com/assets/badge.png",
+
+  // optional, an image to display in the notification content
+  // see https://pushpad.xyz/docs/sending_images
+  ImageURL: "https://example.com/assets/image.png",
+
+  // optional, drop the notification after this number of seconds if a device is offline
+  TTL: 604800,
+
+  // optional, prevent Chrome on desktop from automatically closing the notification after a few seconds
+  RequireInteraction: true,
+
+  // optional, enable this option if you want a mute notification without any sound
+  Silent: false,
+
+  // optional, enable this option only for time-sensitive alerts (e.g. incoming phone call)
+  Urgent: false,
+
+  // optional, a string that is passed as an argument to action button callbacks
+  CustomData: "123",
+
+  // optional, bookmark the notification in the Pushpad dashboard (e.g. to highlight manual notifications)
+  Starred: true,
+
   // optional, use this option only if you need to create scheduled notifications (max 5 days)
   // see https://pushpad.xyz/docs/schedule_notifications
   SendAt: &sendAtTime, // sendAtTime := time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC)
+
   // optional, add the notification to custom categories for stats aggregation
   // see https://pushpad.xyz/docs/monitoring
   CustomMetrics: []string{"examples", "another_metric"}, // up to 3 metrics per notification
