@@ -120,8 +120,9 @@ res, err := n.Send()
 n := pushpad.Notification { Body: "Example", Tags: []string{"segment1", "segment2"} }
 res, err := n.Send()
 
-// you can use boolean expressions 
-// they must be in the disjunctive normal form (without parenthesis)
+// you can use boolean expressions
+// they can include parentheses and the operators !, &&, || (from highest to lowest precedence)
+// https://pushpad.xyz/docs/tags
 n := pushpad.Notification { Body: "Example", Tags: []string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"} }
 res, err := n.Send()
 
