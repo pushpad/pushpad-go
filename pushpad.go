@@ -1,9 +1,10 @@
 package pushpad
 
 var pushpadAuthToken string
-var pushpadProjectID string
+var pushpadProjectID int
 
-func Configure (authToken string, projectID string) {
-  pushpadAuthToken = authToken
-  pushpadProjectID = projectID
+// Configure sets the global credentials for API calls.
+func Configure(authToken string, projectID int) {
+	pushpadAuthToken = authToken
+	pushpadProjectID = projectID
 }

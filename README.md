@@ -20,8 +20,11 @@ Then import the packages:
 ```go
 import (
   "github.com/pushpad/pushpad-go"
+  "github.com/pushpad/pushpad-go/notification"
 )
 ```
+
+Other resources are available in the `subscription`, `project`, and `sender` packages.
 
 ## Getting started
 
@@ -30,11 +33,11 @@ First you need to sign up to Pushpad and create a project there.
 Then set your authentication credentials and project:
 
 ```go
-pushpad.Configure("AUTH_TOKEN", "PROJECT_ID")
+pushpad.Configure("AUTH_TOKEN", 123)
 ```
 
 - `AUTH_TOKEN` can be found in the user account settings.
-- `PROJECT_ID` can be found in the project settings. If your application uses multiple projects, you can set the `ProjectID` as an additional field for `Notification`.
+- `PROJECT_ID` can be found in the project settings. If your application uses multiple projects, you can pass the `ProjectID` as a param to functions.
 
 ## Collecting user subscriptions to push notifications
 
@@ -50,7 +53,10 @@ fmt.Printf("User ID Signature: %s", s)
 ## Sending push notifications
 
 ```go
-n := pushpad.Notification {
+n := notification.NotificationCreateParams {
+  // optional, defaults to the project configured via pushpad.Configure
+  ProjectID: 0,
+
   // required, the main content of the notification
   Body: "Hello world!",
 
@@ -97,45 +103,45 @@ n := pushpad.Notification {
   CustomMetrics: []string{"examples", "another_metric"}, // up to 3 metrics per notification
 }
 
-res, err := n.Send()
+res, err := notification.Create(&n)
 
 // TARGETING:
 // You can use UIDs and Tags for sending the notification only to a specific audience...
 
 // deliver to a user
-n := pushpad.Notification { Body: "Hi user1", UIDs: []string{"user1"} }
-res, err := n.Send()
+n := notification.NotificationCreateParams { Body: "Hi user1", UIDs: []string{"user1"} }
+res, err := notification.Create(&n)
 
 // deliver to a group of users
-n := pushpad.Notification { Body: "Hi users", UIDs: []string{"user1","user2","user3"} }
-res, err := n.Send()
+n := notification.NotificationCreateParams { Body: "Hi users", UIDs: []string{"user1","user2","user3"} }
+res, err := notification.Create(&n)
 
 // deliver to some users only if they have a given preference
 // e.g. only "users" who have a interested in "events" will be reached
-n := pushpad.Notification { Body: "New event", UIDs: []string{"user1","user2"}, Tags: []string{"events"} }
-res, err := n.Send()
+n := notification.NotificationCreateParams { Body: "New event", UIDs: []string{"user1","user2"}, Tags: []string{"events"} }
+res, err := notification.Create(&n)
 
 // deliver to segments
 // e.g. any subscriber that has the tag "segment1" OR "segment2"
-n := pushpad.Notification { Body: "Example", Tags: []string{"segment1", "segment2"} }
-res, err := n.Send()
+n := notification.NotificationCreateParams { Body: "Example", Tags: []string{"segment1", "segment2"} }
+res, err := notification.Create(&n)
 
 // you can use boolean expressions
 // they can include parentheses and the operators !, &&, || (from highest to lowest precedence)
 // https://pushpad.xyz/docs/tags
-n := pushpad.Notification { Body: "Example", Tags: []string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"} }
-res, err := n.Send()
+n := notification.NotificationCreateParams { Body: "Example", Tags: []string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"} }
+res, err := notification.Create(&n)
 
 // deliver to everyone
-n := pushpad.Notification { Body: "Hello everybody" }
-res, err := n.Send()
+n := notification.NotificationCreateParams { Body: "Hello everybody" }
+res, err := notification.Create(&n)
 ```
 
 You can set the default values for most fields in the project settings. See also [the docs](https://pushpad.xyz/docs/rest_api#notifications_api_docs) for more information about notification fields.
 
 If you try to send a notification to a user ID, but that user is not subscribed, that ID is simply ignored.
 
-The methods above return a `NotificationResponse struct`:
+The methods above return a `NotificationCreateResponse struct`:
 
 - `ID` is the id of the notification on Pushpad
 - `Scheduled` is the estimated reach of the notification (i.e. the number of devices to which the notification will be sent, which can be different from the number of users, since a user may receive notifications on multiple devices)

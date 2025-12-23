@@ -1,0 +1,128 @@
+package subscription
+
+import (
+	"fmt"
+	"net/url"
+	"strconv"
+
+	"github.com/pushpad/pushpad-go"
+)
+
+func List(params *SubscriptionListParams) ([]Subscription, int, error) {
+	projectID := 0
+	if params != nil {
+		projectID = params.ProjectID
+	}
+	projectID, err := pushpad.ResolveProjectID(projectID)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	query := url.Values{}
+	if params != nil {
+		if params.Page > 0 {
+			query.Set("page", strconv.Itoa(params.Page))
+		}
+		if params.PerPage > 0 {
+			query.Set("per_page", strconv.Itoa(params.PerPage))
+		}
+		for _, uid := range params.UIDs {
+			query.Add("uids[]", uid)
+		}
+		for _, tag := range params.Tags {
+			query.Add("tags[]", tag)
+		}
+	}
+
+	var subscriptions []Subscription
+	res, err := pushpad.DoRequest("GET", fmt.Sprintf("/projects/%d/subscriptions", projectID), query, nil, []int{200}, &subscriptions)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	totalCount := 0
+	if header := res.Header.Get("X-Total-Count"); header != "" {
+		if parsed, parseErr := strconv.Atoi(header); parseErr == nil {
+			totalCount = parsed
+		}
+	}
+
+	return subscriptions, totalCount, nil
+}
+
+func Create(subscription *SubscriptionCreateParams) (*Subscription, error) {
+	if subscription == nil {
+		return nil, fmt.Errorf("pushpad: subscription is required")
+	}
+	if subscription.Endpoint == "" {
+		return nil, fmt.Errorf("pushpad: subscription endpoint is required")
+	}
+	projectID, err := pushpad.ResolveProjectID(subscription.ProjectID)
+	if err != nil {
+		return nil, err
+	}
+
+	var created Subscription
+	_, err = pushpad.DoRequest("POST", fmt.Sprintf("/projects/%d/subscriptions", projectID), nil, subscription, []int{201}, &created)
+	if err != nil {
+		return nil, err
+	}
+	return &created, nil
+}
+
+func Get(subscriptionID int, params *SubscriptionGetParams) (*Subscription, error) {
+	if subscriptionID == 0 {
+		return nil, fmt.Errorf("pushpad: subscription ID is required")
+	}
+	projectID := 0
+	if params != nil {
+		projectID = params.ProjectID
+	}
+	projectID, err := pushpad.ResolveProjectID(projectID)
+	if err != nil {
+		return nil, err
+	}
+
+	var subscription Subscription
+	_, err = pushpad.DoRequest("GET", fmt.Sprintf("/projects/%d/subscriptions/%d", projectID, subscriptionID), nil, nil, []int{200}, &subscription)
+	if err != nil {
+		return nil, err
+	}
+	return &subscription, nil
+}
+
+func Update(subscriptionID int, update *SubscriptionUpdateParams) (*Subscription, error) {
+	if update == nil {
+		return nil, fmt.Errorf("pushpad: subscription update is required")
+	}
+	if subscriptionID == 0 {
+		return nil, fmt.Errorf("pushpad: subscription ID is required")
+	}
+	projectID, err := pushpad.ResolveProjectID(update.ProjectID)
+	if err != nil {
+		return nil, err
+	}
+
+	var subscription Subscription
+	_, err = pushpad.DoRequest("PATCH", fmt.Sprintf("/projects/%d/subscriptions/%d", projectID, subscriptionID), nil, update, []int{200}, &subscription)
+	if err != nil {
+		return nil, err
+	}
+	return &subscription, nil
+}
+
+func Delete(subscriptionID int, params *SubscriptionDeleteParams) error {
+	if subscriptionID == 0 {
+		return fmt.Errorf("pushpad: subscription ID is required")
+	}
+	projectID := 0
+	if params != nil {
+		projectID = params.ProjectID
+	}
+	projectID, err := pushpad.ResolveProjectID(projectID)
+	if err != nil {
+		return err
+	}
+	_, err = pushpad.DoRequest("DELETE", fmt.Sprintf("/projects/%d/subscriptions/%d", projectID, subscriptionID), nil, nil, []int{204}, nil)
+	return err
+}
