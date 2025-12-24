@@ -44,6 +44,10 @@ func Create(params *NotificationCreateParams) (*NotificationCreateResponse, erro
 	return &response, nil
 }
 
+func Send(params *NotificationCreateParams) (*NotificationCreateResponse, error) {
+	return Create(params)
+}
+
 func Get(notificationID int, params *NotificationGetParams) (*Notification, error) {
 	if notificationID == 0 {
 		return nil, fmt.Errorf("pushpad: notification ID is required")

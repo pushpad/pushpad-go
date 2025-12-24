@@ -111,7 +111,7 @@ func TestNotificationSend(t *testing.T) {
 	pushpad.Configure("AUTH_TOKEN", 0)
 
 	n := NotificationCreateParams{ProjectID: 123, Body: "Hello world!"}
-	res, err := Create(&n)
+	res, err := Send(&n)
 
 	if err != nil {
 		t.Fatalf("got an error: %s", err)
