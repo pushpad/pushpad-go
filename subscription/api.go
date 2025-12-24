@@ -9,29 +9,26 @@ import (
 )
 
 func List(params *SubscriptionListParams) ([]Subscription, int, error) {
-	projectID := 0
-	if params != nil {
-		projectID = params.ProjectID
+	if params == nil {
+		params = &SubscriptionListParams{}
 	}
-	projectID, err := pushpad.ResolveProjectID(projectID)
+	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
 		return nil, 0, err
 	}
 
 	query := url.Values{}
-	if params != nil {
-		if params.Page > 0 {
-			query.Set("page", strconv.Itoa(params.Page))
-		}
-		if params.PerPage > 0 {
-			query.Set("per_page", strconv.Itoa(params.PerPage))
-		}
-		for _, uid := range params.UIDs {
-			query.Add("uids[]", uid)
-		}
-		for _, tag := range params.Tags {
-			query.Add("tags[]", tag)
-		}
+	if params.Page > 0 {
+		query.Set("page", strconv.Itoa(params.Page))
+	}
+	if params.PerPage > 0 {
+		query.Set("per_page", strconv.Itoa(params.PerPage))
+	}
+	for _, uid := range params.UIDs {
+		query.Add("uids[]", uid)
+	}
+	for _, tag := range params.Tags {
+		query.Add("tags[]", tag)
 	}
 
 	var subscriptions []Subscription
@@ -68,14 +65,13 @@ func Create(params *SubscriptionCreateParams) (*Subscription, error) {
 }
 
 func Get(subscriptionID int, params *SubscriptionGetParams) (*Subscription, error) {
+	if params == nil {
+		params = &SubscriptionGetParams{}
+	}
 	if subscriptionID == 0 {
 		return nil, fmt.Errorf("pushpad: subscription ID is required")
 	}
-	projectID := 0
-	if params != nil {
-		projectID = params.ProjectID
-	}
-	projectID, err := pushpad.ResolveProjectID(projectID)
+	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -109,14 +105,13 @@ func Update(subscriptionID int, params *SubscriptionUpdateParams) (*Subscription
 }
 
 func Delete(subscriptionID int, params *SubscriptionDeleteParams) error {
+	if params == nil {
+		params = &SubscriptionDeleteParams{}
+	}
 	if subscriptionID == 0 {
 		return fmt.Errorf("pushpad: subscription ID is required")
 	}
-	projectID := 0
-	if params != nil {
-		projectID = params.ProjectID
-	}
-	projectID, err := pushpad.ResolveProjectID(projectID)
+	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
 		return err
 	}

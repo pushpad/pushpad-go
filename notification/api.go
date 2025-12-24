@@ -9,17 +9,16 @@ import (
 )
 
 func List(params *NotificationListParams) ([]Notification, error) {
-	projectID := 0
-	if params != nil {
-		projectID = params.ProjectID
+	if params == nil {
+		params = &NotificationListParams{}
 	}
-	projectID, err := pushpad.ResolveProjectID(projectID)
+	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
 		return nil, err
 	}
 
 	query := url.Values{}
-	if params != nil && params.Page > 0 {
+	if params.Page > 0 {
 		query.Set("page", strconv.Itoa(params.Page))
 	}
 
