@@ -17,36 +17,36 @@ type Subscription struct {
 
 // SubscriptionCreateParams is the payload to create a subscription.
 type SubscriptionCreateParams struct {
-	ProjectID int      `json:"-"`
-	Endpoint  string   `json:"endpoint"`
-	P256DH    string   `json:"p256dh,omitempty"`
-	Auth      string   `json:"auth,omitempty"`
-	UID       string   `json:"uid,omitempty"`
-	Tags      []string `json:"tags,omitempty"`
+	ProjectID *int      `json:"-"`
+	Endpoint  *string   `json:"endpoint"`
+	P256DH    *string   `json:"p256dh,omitempty"`
+	Auth      *string   `json:"auth,omitempty"`
+	UID       *string   `json:"uid,omitempty"`
+	Tags      *[]string `json:"tags,omitempty"`
 }
 
 // SubscriptionUpdateParams is the payload to update a subscription.
 type SubscriptionUpdateParams struct {
-	ProjectID int      `json:"-"`
-	UID       *string  `json:"uid,omitempty"`
-	Tags      []string `json:"tags,omitempty"`
+	ProjectID *int      `json:"-"`
+	UID       *string   `json:"uid,omitempty"`
+	Tags      *[]string `json:"tags,omitempty"`
 }
 
 // SubscriptionListParams controls subscription listing.
 type SubscriptionListParams struct {
-	ProjectID int
-	Page      int
-	PerPage   int
-	UIDs      []string
-	Tags      []string
+	ProjectID *int
+	Page      *int
+	PerPage   *int
+	UIDs      *[]string
+	Tags      *[]string
 }
 
 // SubscriptionGetParams controls subscription fetches.
 type SubscriptionGetParams struct {
-	ProjectID int
+	ProjectID *int
 }
 
 // SubscriptionDeleteParams controls subscription deletes.
 type SubscriptionDeleteParams struct {
-	ProjectID int
+	ProjectID *int
 }

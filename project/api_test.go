@@ -42,9 +42,9 @@ func TestCreateProject(t *testing.T) {
 
 	pushpad.Configure("TOKEN", 123)
 	payload := &ProjectCreateParams{
-		SenderID: 9,
-		Name:     "New Project",
-		Website:  "https://example.com",
+		SenderID: pushpad.Int(9),
+		Name:     pushpad.String("New Project"),
+		Website:  pushpad.String("https://example.com"),
 	}
 	project, err := Create(payload)
 	if err != nil {
@@ -58,18 +58,15 @@ func TestCreateProject(t *testing.T) {
 func TestCreateProjectWithAllFields(t *testing.T) {
 	defer gock.Off()
 
-	notificationsTTL := 604800
-	requireInteraction := false
-	silent := false
 	params := ProjectCreateParams{
-		SenderID:                     98765,
-		Name:                         "My Project",
-		Website:                      "https://example.com",
-		IconURL:                      "https://example.com/icon.png",
-		BadgeURL:                     "https://example.com/badge.png",
-		NotificationsTTL:             &notificationsTTL,
-		NotificationsRequireInteract: &requireInteraction,
-		NotificationsSilent:          &silent,
+		SenderID:                     pushpad.Int(98765),
+		Name:                         pushpad.String("My Project"),
+		Website:                      pushpad.String("https://example.com"),
+		IconURL:                      pushpad.String("https://example.com/icon.png"),
+		BadgeURL:                     pushpad.String("https://example.com/badge.png"),
+		NotificationsTTL:             pushpad.Int(604800),
+		NotificationsRequireInteract: pushpad.Bool(false),
+		NotificationsSilent:          pushpad.Bool(false),
 	}
 
 	projectJSON, err := json.Marshal(params)
@@ -149,7 +146,7 @@ func TestUpdateProject(t *testing.T) {
 		BodyString(`{"id":2,"name":"Updated Project"}`)
 
 	pushpad.Configure("TOKEN", 123)
-	update := &ProjectUpdateParams{Name: "Updated Project"}
+	update := &ProjectUpdateParams{Name: pushpad.String("Updated Project")}
 	project, err := Update(2, update)
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
@@ -184,9 +181,9 @@ func TestAPIErrorOnServerFailure(t *testing.T) {
 
 	pushpad.Configure("TOKEN", 123)
 	_, err := Create(&ProjectCreateParams{
-		SenderID: 1,
-		Name:     "Failing Project",
-		Website:  "https://example.com",
+		SenderID: pushpad.Int(1),
+		Name:     pushpad.String("Failing Project"),
+		Website:  pushpad.String("https://example.com"),
 	})
 	apiErr, ok := err.(*pushpad.APIError)
 	if !ok {

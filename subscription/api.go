@@ -18,17 +18,21 @@ func List(params *SubscriptionListParams) ([]Subscription, int, error) {
 	}
 
 	query := url.Values{}
-	if params.Page > 0 {
-		query.Set("page", strconv.Itoa(params.Page))
+	if params.Page != nil && *params.Page > 0 {
+		query.Set("page", strconv.Itoa(*params.Page))
 	}
-	if params.PerPage > 0 {
-		query.Set("per_page", strconv.Itoa(params.PerPage))
+	if params.PerPage != nil && *params.PerPage > 0 {
+		query.Set("per_page", strconv.Itoa(*params.PerPage))
 	}
-	for _, uid := range params.UIDs {
-		query.Add("uids[]", uid)
+	if params.UIDs != nil {
+		for _, uid := range *params.UIDs {
+			query.Add("uids[]", uid)
+		}
 	}
-	for _, tag := range params.Tags {
-		query.Add("tags[]", tag)
+	if params.Tags != nil {
+		for _, tag := range *params.Tags {
+			query.Add("tags[]", tag)
+		}
 	}
 
 	var subscriptions []Subscription

@@ -55,52 +55,52 @@ fmt.Printf("User ID Signature: %s", s)
 ```go
 n := notification.NotificationCreateParams {
   // optional, defaults to the project configured via pushpad.Configure
-  ProjectID: 0,
+  ProjectID: pushpad.Int(0),
 
   // required, the main content of the notification
-  Body: "Hello world!",
+  Body: pushpad.String("Hello world!"),
 
   // optional, the title of the notification (defaults to your project name)
-  Title: "Website Name",
+  Title: pushpad.String("Website Name"),
 
   // optional, open this link on notification click (defaults to your project website)
-  TargetURL: "https://example.com",
+  TargetURL: pushpad.String("https://example.com"),
 
   // optional, the icon of the notification (defaults to the project icon)
-  IconURL: "https://example.com/assets/icon.png",
+  IconURL: pushpad.String("https://example.com/assets/icon.png"),
 
   // optional, the small icon displayed in the status bar (defaults to the project badge)
-  BadgeURL: "https://example.com/assets/badge.png",
+  BadgeURL: pushpad.String("https://example.com/assets/badge.png"),
 
   // optional, an image to display in the notification content
   // see https://pushpad.xyz/docs/sending_images
-  ImageURL: "https://example.com/assets/image.png",
+  ImageURL: pushpad.String("https://example.com/assets/image.png"),
 
   // optional, drop the notification after this number of seconds if a device is offline
-  TTL: 604800,
+  TTL: pushpad.Int(604800),
 
   // optional, prevent Chrome on desktop from automatically closing the notification after a few seconds
-  RequireInteraction: true,
+  RequireInteraction: pushpad.Bool(true),
 
   // optional, enable this option if you want a mute notification without any sound
-  Silent: false,
+  Silent: pushpad.Bool(false),
 
   // optional, enable this option only for time-sensitive alerts (e.g. incoming phone call)
-  Urgent: false,
+  Urgent: pushpad.Bool(false),
 
   // optional, a string that is passed as an argument to action button callbacks
-  CustomData: "123",
+  CustomData: pushpad.String("123"),
 
   // optional, bookmark the notification in the Pushpad dashboard (e.g. to highlight manual notifications)
-  Starred: true,
+  Starred: pushpad.Bool(true),
 
   // optional, use this option only if you need to create scheduled notifications (max 5 days)
   // see https://pushpad.xyz/docs/schedule_notifications
-  SendAt: &sendAtTime, // sendAtTime := time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC)
+  SendAt: pushpad.Time(sendAtTime), // sendAtTime := time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC)
 
   // optional, add the notification to custom categories for stats aggregation
   // see https://pushpad.xyz/docs/monitoring
-  CustomMetrics: []string{"examples", "another_metric"}, // up to 3 metrics per notification
+  CustomMetrics: pushpad.Strings([]string{"examples", "another_metric"}), // up to 3 metrics per notification
 }
 
 res, err := notification.Create(&n)
@@ -109,31 +109,31 @@ res, err := notification.Create(&n)
 // You can use UIDs and Tags for sending the notification only to a specific audience...
 
 // deliver to a user
-n := notification.NotificationCreateParams { Body: "Hi user1", UIDs: []string{"user1"} }
+n := notification.NotificationCreateParams { Body: pushpad.String("Hi user1"), UIDs: pushpad.Strings([]string{"user1"}) }
 res, err := notification.Create(&n)
 
 // deliver to a group of users
-n := notification.NotificationCreateParams { Body: "Hi users", UIDs: []string{"user1","user2","user3"} }
+n := notification.NotificationCreateParams { Body: pushpad.String("Hi users"), UIDs: pushpad.Strings([]string{"user1","user2","user3"}) }
 res, err := notification.Create(&n)
 
 // deliver to some users only if they have a given preference
 // e.g. only "users" who have a interested in "events" will be reached
-n := notification.NotificationCreateParams { Body: "New event", UIDs: []string{"user1","user2"}, Tags: []string{"events"} }
+n := notification.NotificationCreateParams { Body: pushpad.String("New event"), UIDs: pushpad.Strings([]string{"user1","user2"}), Tags: pushpad.Strings([]string{"events"}) }
 res, err := notification.Create(&n)
 
 // deliver to segments
 // e.g. any subscriber that has the tag "segment1" OR "segment2"
-n := notification.NotificationCreateParams { Body: "Example", Tags: []string{"segment1", "segment2"} }
+n := notification.NotificationCreateParams { Body: pushpad.String("Example"), Tags: pushpad.Strings([]string{"segment1", "segment2"}) }
 res, err := notification.Create(&n)
 
 // you can use boolean expressions
 // they can include parentheses and the operators !, &&, || (from highest to lowest precedence)
 // https://pushpad.xyz/docs/tags
-n := notification.NotificationCreateParams { Body: "Example", Tags: []string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"} }
+n := notification.NotificationCreateParams { Body: pushpad.String("Example"), Tags: pushpad.Strings([]string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"}) }
 res, err := notification.Create(&n)
 
 // deliver to everyone
-n := notification.NotificationCreateParams { Body: "Hello everybody" }
+n := notification.NotificationCreateParams { Body: pushpad.String("Hello everybody") }
 res, err := notification.Create(&n)
 ```
 

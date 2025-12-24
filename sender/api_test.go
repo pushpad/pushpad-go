@@ -41,7 +41,7 @@ func TestCreateSender(t *testing.T) {
 		BodyString(`{"id":5,"name":"New Sender"}`)
 
 	pushpad.Configure("TOKEN", 123)
-	sender, err := Create(&SenderCreateParams{Name: "New Sender"})
+	sender, err := Create(&SenderCreateParams{Name: pushpad.String("New Sender")})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -54,9 +54,9 @@ func TestCreateSenderWithAllFields(t *testing.T) {
 	defer gock.Off()
 
 	params := SenderCreateParams{
-		Name:            "My Sender",
-		VAPIDPrivateKey: "-----BEGIN EC PRIVATE KEY----- ...",
-		VAPIDPublicKey:  "-----BEGIN PUBLIC KEY----- ...",
+		Name:            pushpad.String("My Sender"),
+		VAPIDPrivateKey: pushpad.String("-----BEGIN EC PRIVATE KEY----- ..."),
+		VAPIDPublicKey:  pushpad.String("-----BEGIN PUBLIC KEY----- ..."),
 	}
 
 	senderJSON, err := json.Marshal(params)
@@ -136,7 +136,7 @@ func TestUpdateSender(t *testing.T) {
 		BodyString(`{"id":5,"name":"Updated Sender"}`)
 
 	pushpad.Configure("TOKEN", 123)
-	update := &SenderUpdateParams{Name: "Updated Sender"}
+	update := &SenderUpdateParams{Name: pushpad.String("Updated Sender")}
 	sender, err := Update(5, update)
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)

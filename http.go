@@ -27,9 +27,9 @@ func (e *APIError) Error() string {
 }
 
 // ResolveProjectID returns the provided project ID or the configured default project ID.
-func ResolveProjectID(projectID int) (int, error) {
-	if projectID != 0 {
-		return projectID, nil
+func ResolveProjectID(projectID *int) (int, error) {
+	if projectID != nil && *projectID != 0 {
+		return *projectID, nil
 	}
 	if pushpadProjectID == 0 {
 		return 0, fmt.Errorf("pushpad: project ID is required")

@@ -13,14 +13,14 @@ type Sender struct {
 
 // SenderCreateParams is the payload to create a sender.
 type SenderCreateParams struct {
-	Name            string `json:"name"`
-	VAPIDPrivateKey string `json:"vapid_private_key,omitempty"`
-	VAPIDPublicKey  string `json:"vapid_public_key,omitempty"`
+	Name            *string `json:"name"`
+	VAPIDPrivateKey *string `json:"vapid_private_key,omitempty"`
+	VAPIDPublicKey  *string `json:"vapid_public_key,omitempty"`
 }
 
 // SenderUpdateParams is the payload to update a sender.
 type SenderUpdateParams struct {
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // SenderListParams controls sender listing.

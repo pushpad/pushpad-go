@@ -18,8 +18,8 @@ func List(params *NotificationListParams) ([]Notification, error) {
 	}
 
 	query := url.Values{}
-	if params.Page > 0 {
-		query.Set("page", strconv.Itoa(params.Page))
+	if params.Page != nil && *params.Page > 0 {
+		query.Set("page", strconv.Itoa(*params.Page))
 	}
 
 	var notifications []Notification

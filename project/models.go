@@ -18,25 +18,25 @@ type Project struct {
 
 // ProjectCreateParams is the payload to create a project.
 type ProjectCreateParams struct {
-	SenderID                     int    `json:"sender_id"`
-	Name                         string `json:"name"`
-	Website                      string `json:"website"`
-	IconURL                      string `json:"icon_url,omitempty"`
-	BadgeURL                     string `json:"badge_url,omitempty"`
-	NotificationsTTL             *int   `json:"notifications_ttl,omitempty"`
-	NotificationsRequireInteract *bool  `json:"notifications_require_interaction,omitempty"`
-	NotificationsSilent          *bool  `json:"notifications_silent,omitempty"`
+	SenderID                     *int    `json:"sender_id"`
+	Name                         *string `json:"name"`
+	Website                      *string `json:"website"`
+	IconURL                      *string `json:"icon_url,omitempty"`
+	BadgeURL                     *string `json:"badge_url,omitempty"`
+	NotificationsTTL             *int    `json:"notifications_ttl,omitempty"`
+	NotificationsRequireInteract *bool   `json:"notifications_require_interaction,omitempty"`
+	NotificationsSilent          *bool   `json:"notifications_silent,omitempty"`
 }
 
 // ProjectUpdateParams is the payload to update a project.
 type ProjectUpdateParams struct {
-	Name                         string `json:"name,omitempty"`
-	Website                      string `json:"website,omitempty"`
-	IconURL                      string `json:"icon_url,omitempty"`
-	BadgeURL                     string `json:"badge_url,omitempty"`
-	NotificationsTTL             *int   `json:"notifications_ttl,omitempty"`
-	NotificationsRequireInteract *bool  `json:"notifications_require_interaction,omitempty"`
-	NotificationsSilent          *bool  `json:"notifications_silent,omitempty"`
+	Name                         *string `json:"name,omitempty"`
+	Website                      *string `json:"website,omitempty"`
+	IconURL                      *string `json:"icon_url,omitempty"`
+	BadgeURL                     *string `json:"badge_url,omitempty"`
+	NotificationsTTL             *int    `json:"notifications_ttl,omitempty"`
+	NotificationsRequireInteract *bool   `json:"notifications_require_interaction,omitempty"`
+	NotificationsSilent          *bool   `json:"notifications_silent,omitempty"`
 }
 
 // ProjectListParams controls project listing.
