@@ -25,9 +25,9 @@ func TestListSubscriptions(t *testing.T) {
 
 	pushpad.Configure("TOKEN", 0)
 	params := &SubscriptionListParams{
-		ProjectID: pushpad.Int(123),
-		Page:      pushpad.Int(1),
-		PerPage:   pushpad.Int(20),
+		ProjectID: pushpad.Int64(123),
+		Page:      pushpad.Int64(1),
+		PerPage:   pushpad.Int64(20),
 		UIDs:      pushpad.Strings([]string{"u1", "u2"}),
 		Tags:      pushpad.Strings([]string{"tag1"}),
 	}
@@ -56,7 +56,7 @@ func TestListSubscriptionsNoOptions(t *testing.T) {
 		BodyString(`[]`)
 
 	pushpad.Configure("TOKEN", 0)
-	subscriptions, total, err := List(&SubscriptionListParams{ProjectID: pushpad.Int(123)})
+	subscriptions, total, err := List(&SubscriptionListParams{ProjectID: pushpad.Int64(123)})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -79,7 +79,7 @@ func TestCreateSubscription(t *testing.T) {
 		BodyString(`{"id":50,"endpoint":"https://example.com/1"}`)
 
 	pushpad.Configure("TOKEN", 0)
-	subscription, err := Create(&SubscriptionCreateParams{ProjectID: pushpad.Int(123), Endpoint: pushpad.String("https://example.com/1")})
+	subscription, err := Create(&SubscriptionCreateParams{ProjectID: pushpad.Int64(123), Endpoint: pushpad.String("https://example.com/1")})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -92,7 +92,7 @@ func TestCreateSubscriptionWithAllFields(t *testing.T) {
 	defer gock.Off()
 
 	params := SubscriptionCreateParams{
-		ProjectID: pushpad.Int(123),
+		ProjectID: pushpad.Int64(123),
 		Endpoint:  pushpad.String("https://example.com/push/f7Q1Eyf7EyfAb1"),
 		P256DH:    pushpad.String("BCQVDTlYWdl05lal3lG5SKr3VxTrEWpZErbkxWrzknHrIKFwihDoZpc_2sH6Sh08h-CacUYI-H8gW4jH-uMYZQ4="),
 		Auth:      pushpad.String("cdKMlhgVeSPzCXZ3V7FtgQ=="),
@@ -134,7 +134,7 @@ func TestCreateSubscriptionMissingEndpoint(t *testing.T) {
 		BodyString(`{"error":"validation error"}`)
 
 	pushpad.Configure("TOKEN", 0)
-	_, err := Create(&SubscriptionCreateParams{ProjectID: pushpad.Int(123)})
+	_, err := Create(&SubscriptionCreateParams{ProjectID: pushpad.Int64(123)})
 	apiErr, ok := err.(*pushpad.APIError)
 	if !ok {
 		t.Fatalf("expected APIError, got %T", err)
@@ -157,7 +157,7 @@ func TestGetSubscription(t *testing.T) {
 		BodyString(`{"id":50,"endpoint":"https://example.com/1"}`)
 
 	pushpad.Configure("TOKEN", 0)
-	subscription, err := Get(50, &SubscriptionGetParams{ProjectID: pushpad.Int(123)})
+	subscription, err := Get(50, &SubscriptionGetParams{ProjectID: pushpad.Int64(123)})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -177,7 +177,7 @@ func TestUpdateSubscription(t *testing.T) {
 		BodyString(`{"id":50,"uid":"new-user"}`)
 
 	pushpad.Configure("TOKEN", 0)
-	update := &SubscriptionUpdateParams{ProjectID: pushpad.Int(123), UID: pushpad.String("new-user")}
+	update := &SubscriptionUpdateParams{ProjectID: pushpad.Int64(123), UID: pushpad.String("new-user")}
 	subscription, err := Update(50, update)
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
@@ -196,7 +196,7 @@ func TestDeleteSubscription(t *testing.T) {
 		Reply(204)
 
 	pushpad.Configure("TOKEN", 0)
-	if err := Delete(50, &SubscriptionDeleteParams{ProjectID: pushpad.Int(123)}); err != nil {
+	if err := Delete(50, &SubscriptionDeleteParams{ProjectID: pushpad.Int64(123)}); err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
 }

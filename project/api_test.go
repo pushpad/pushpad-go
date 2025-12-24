@@ -42,7 +42,7 @@ func TestCreateProject(t *testing.T) {
 
 	pushpad.Configure("TOKEN", 123)
 	payload := &ProjectCreateParams{
-		SenderID: pushpad.Int(9),
+		SenderID: pushpad.Int64(9),
 		Name:     pushpad.String("New Project"),
 		Website:  pushpad.String("https://example.com"),
 	}
@@ -59,12 +59,12 @@ func TestCreateProjectWithAllFields(t *testing.T) {
 	defer gock.Off()
 
 	params := ProjectCreateParams{
-		SenderID:                     pushpad.Int(98765),
+		SenderID:                     pushpad.Int64(98765),
 		Name:                         pushpad.String("My Project"),
 		Website:                      pushpad.String("https://example.com"),
 		IconURL:                      pushpad.String("https://example.com/icon.png"),
 		BadgeURL:                     pushpad.String("https://example.com/badge.png"),
-		NotificationsTTL:             pushpad.Int(604800),
+		NotificationsTTL:             pushpad.Int64(604800),
 		NotificationsRequireInteract: pushpad.Bool(false),
 		NotificationsSilent:          pushpad.Bool(false),
 	}
@@ -181,7 +181,7 @@ func TestAPIErrorOnServerFailure(t *testing.T) {
 
 	pushpad.Configure("TOKEN", 123)
 	_, err := Create(&ProjectCreateParams{
-		SenderID: pushpad.Int(1),
+		SenderID: pushpad.Int64(1),
 		Name:     pushpad.String("Failing Project"),
 		Website:  pushpad.String("https://example.com"),
 	})

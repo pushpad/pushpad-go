@@ -27,7 +27,7 @@ func (e *APIError) Error() string {
 }
 
 // ResolveProjectID returns the provided project ID or the configured default project ID.
-func ResolveProjectID(projectID *int) (int, error) {
+func ResolveProjectID(projectID *int64) (int64, error) {
 	if projectID != nil && *projectID != 0 {
 		return *projectID, nil
 	}

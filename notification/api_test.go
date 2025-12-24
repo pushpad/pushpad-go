@@ -20,7 +20,7 @@ func TestListNotifications(t *testing.T) {
 		BodyString(`[{"id":1,"body":"Hi"}]`)
 
 	pushpad.Configure("TOKEN", 0)
-	notifications, err := List(&NotificationListParams{ProjectID: pushpad.Int(123), Page: pushpad.Int(2)})
+	notifications, err := List(&NotificationListParams{ProjectID: pushpad.Int64(123), Page: pushpad.Int64(2)})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -42,7 +42,7 @@ func TestListNotificationsDefaultPage(t *testing.T) {
 		BodyString(`[]`)
 
 	pushpad.Configure("TOKEN", 0)
-	notifications, err := List(&NotificationListParams{ProjectID: pushpad.Int(123)})
+	notifications, err := List(&NotificationListParams{ProjectID: pushpad.Int64(123)})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -62,7 +62,7 @@ func TestCreateNotification(t *testing.T) {
 		BodyString(`{"id":99,"scheduled":10}`)
 
 	pushpad.Configure("TOKEN", 0)
-	response, err := Create(&NotificationCreateParams{ProjectID: pushpad.Int(123), Body: pushpad.String("Hello")})
+	response, err := Create(&NotificationCreateParams{ProjectID: pushpad.Int64(123), Body: pushpad.String("Hello")})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -83,14 +83,14 @@ func TestCreateNotificationWithAllFields(t *testing.T) {
 	}
 
 	params := NotificationCreateParams{
-		ProjectID:          pushpad.Int(123),
+		ProjectID:          pushpad.Int64(123),
 		Title:              pushpad.String("Foo Bar"),
 		Body:               pushpad.String("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 		TargetURL:          pushpad.String("https://example.com"),
 		IconURL:            pushpad.String("https://example.com/assets/icon.png"),
 		BadgeURL:           pushpad.String("https://example.com/assets/badge.png"),
 		ImageURL:           pushpad.String("https://example.com/assets/image.png"),
-		TTL:                pushpad.Int(604800),
+		TTL:                pushpad.Int64(604800),
 		RequireInteraction: pushpad.Bool(false),
 		Silent:             pushpad.Bool(false),
 		Urgent:             pushpad.Bool(false),
@@ -147,7 +147,7 @@ func TestCreateNotificationMissingBody(t *testing.T) {
 		BodyString(`{"error":"validation error"}`)
 
 	pushpad.Configure("TOKEN", 0)
-	_, err := Create(&NotificationCreateParams{ProjectID: pushpad.Int(123)})
+	_, err := Create(&NotificationCreateParams{ProjectID: pushpad.Int64(123)})
 	apiErr, ok := err.(*pushpad.APIError)
 	if !ok {
 		t.Fatalf("expected APIError, got %T", err)
@@ -173,7 +173,7 @@ func TestNotificationSend(t *testing.T) {
 
 	pushpad.Configure("AUTH_TOKEN", 0)
 
-	n := NotificationCreateParams{ProjectID: pushpad.Int(123), Body: pushpad.String("Hello world!")}
+	n := NotificationCreateParams{ProjectID: pushpad.Int64(123), Body: pushpad.String("Hello world!")}
 	res, err := Send(&n)
 
 	if err != nil {

@@ -55,7 +55,7 @@ fmt.Printf("User ID Signature: %s", s)
 ```go
 n := notification.NotificationCreateParams {
   // optional, defaults to the project configured via pushpad.Configure
-  ProjectID: pushpad.Int(0),
+  ProjectID: pushpad.Int64(0),
 
   // required, the main content of the notification
   Body: pushpad.String("Hello world!"),
@@ -77,7 +77,7 @@ n := notification.NotificationCreateParams {
   ImageURL: pushpad.String("https://example.com/assets/image.png"),
 
   // optional, drop the notification after this number of seconds if a device is offline
-  TTL: pushpad.Int(604800),
+  TTL: pushpad.Int64(604800),
 
   // optional, prevent Chrome on desktop from automatically closing the notification after a few seconds
   RequireInteraction: pushpad.Bool(true),

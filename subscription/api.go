@@ -8,7 +8,7 @@ import (
 	"github.com/pushpad/pushpad-go"
 )
 
-func List(params *SubscriptionListParams) ([]Subscription, int, error) {
+func List(params *SubscriptionListParams) ([]Subscription, int64, error) {
 	if params == nil {
 		params = &SubscriptionListParams{}
 	}
@@ -19,10 +19,10 @@ func List(params *SubscriptionListParams) ([]Subscription, int, error) {
 
 	query := url.Values{}
 	if params.Page != nil && *params.Page > 0 {
-		query.Set("page", strconv.Itoa(*params.Page))
+		query.Set("page", strconv.FormatInt(*params.Page, 10))
 	}
 	if params.PerPage != nil && *params.PerPage > 0 {
-		query.Set("per_page", strconv.Itoa(*params.PerPage))
+		query.Set("per_page", strconv.FormatInt(*params.PerPage, 10))
 	}
 	if params.UIDs != nil {
 		for _, uid := range *params.UIDs {
@@ -41,9 +41,9 @@ func List(params *SubscriptionListParams) ([]Subscription, int, error) {
 		return nil, 0, err
 	}
 
-	totalCount := 0
+	var totalCount int64
 	if header := res.Header.Get("X-Total-Count"); header != "" {
-		if parsed, parseErr := strconv.Atoi(header); parseErr == nil {
+		if parsed, parseErr := strconv.ParseInt(header, 10, 64); parseErr == nil {
 			totalCount = parsed
 		}
 	}
@@ -68,7 +68,7 @@ func Create(params *SubscriptionCreateParams) (*Subscription, error) {
 	return &created, nil
 }
 
-func Get(subscriptionID int, params *SubscriptionGetParams) (*Subscription, error) {
+func Get(subscriptionID int64, params *SubscriptionGetParams) (*Subscription, error) {
 	if params == nil {
 		params = &SubscriptionGetParams{}
 	}
@@ -88,7 +88,7 @@ func Get(subscriptionID int, params *SubscriptionGetParams) (*Subscription, erro
 	return &subscription, nil
 }
 
-func Update(subscriptionID int, params *SubscriptionUpdateParams) (*Subscription, error) {
+func Update(subscriptionID int64, params *SubscriptionUpdateParams) (*Subscription, error) {
 	if params == nil {
 		return nil, fmt.Errorf("pushpad: params are required")
 	}
@@ -108,7 +108,7 @@ func Update(subscriptionID int, params *SubscriptionUpdateParams) (*Subscription
 	return &subscription, nil
 }
 
-func Delete(subscriptionID int, params *SubscriptionDeleteParams) error {
+func Delete(subscriptionID int64, params *SubscriptionDeleteParams) error {
 	if params == nil {
 		params = &SubscriptionDeleteParams{}
 	}

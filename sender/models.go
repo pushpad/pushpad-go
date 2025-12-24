@@ -4,7 +4,7 @@ import "time"
 
 // Sender represents a Pushpad sender.
 type Sender struct {
-	ID              int        `json:"id,omitempty"`
+	ID              int64      `json:"id,omitempty"`
 	Name            string     `json:"name,omitempty"`
 	VAPIDPrivateKey string     `json:"vapid_private_key,omitempty"`
 	VAPIDPublicKey  string     `json:"vapid_public_key,omitempty"`

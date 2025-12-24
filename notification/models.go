@@ -12,15 +12,15 @@ type NotificationAction struct {
 
 // Notification represents a Pushpad notification.
 type Notification struct {
-	ID                 int                  `json:"id,omitempty"`
-	ProjectID          int                  `json:"project_id,omitempty"`
+	ID                 int64                `json:"id,omitempty"`
+	ProjectID          int64                `json:"project_id,omitempty"`
 	Title              string               `json:"title,omitempty"`
 	Body               string               `json:"body,omitempty"`
 	TargetURL          string               `json:"target_url,omitempty"`
 	IconURL            string               `json:"icon_url,omitempty"`
 	BadgeURL           string               `json:"badge_url,omitempty"`
 	ImageURL           string               `json:"image_url,omitempty"`
-	TTL                *int                 `json:"ttl,omitempty"`
+	TTL                *int64               `json:"ttl,omitempty"`
 	RequireInteraction *bool                `json:"require_interaction,omitempty"`
 	Silent             *bool                `json:"silent,omitempty"`
 	Urgent             *bool                `json:"urgent,omitempty"`
@@ -32,23 +32,23 @@ type Notification struct {
 	UIDs               []string             `json:"uids"`
 	Tags               []string             `json:"tags"`
 	CreatedAt          *time.Time           `json:"created_at,omitempty"`
-	SuccessfullySent   *int                 `json:"successfully_sent_count,omitempty"`
-	OpenedCount        *int                 `json:"opened_count,omitempty"`
-	ScheduledCount     *int                 `json:"scheduled_count,omitempty"`
+	SuccessfullySent   *int64               `json:"successfully_sent_count,omitempty"`
+	OpenedCount        *int64               `json:"opened_count,omitempty"`
+	ScheduledCount     *int64               `json:"scheduled_count,omitempty"`
 	Scheduled          *bool                `json:"scheduled,omitempty"`
 	Cancelled          *bool                `json:"cancelled,omitempty"`
 }
 
 // NotificationCreateParams represents a notification create payload.
 type NotificationCreateParams struct {
-	ProjectID          *int                  `json:"-"`
+	ProjectID          *int64                `json:"-"`
 	Title              *string               `json:"title,omitempty"`
 	Body               *string               `json:"body,omitempty"`
 	TargetURL          *string               `json:"target_url,omitempty"`
 	IconURL            *string               `json:"icon_url,omitempty"`
 	BadgeURL           *string               `json:"badge_url,omitempty"`
 	ImageURL           *string               `json:"image_url,omitempty"`
-	TTL                *int                  `json:"ttl,omitempty"`
+	TTL                *int64                `json:"ttl,omitempty"`
 	RequireInteraction *bool                 `json:"require_interaction,omitempty"`
 	Silent             *bool                 `json:"silent,omitempty"`
 	Urgent             *bool                 `json:"urgent,omitempty"`
@@ -63,16 +63,16 @@ type NotificationCreateParams struct {
 
 // NotificationCreateResponse describes the response to creating a notification.
 type NotificationCreateResponse struct {
-	ID        int        `json:"id"`
-	Scheduled *int       `json:"scheduled,omitempty"`
+	ID        int64      `json:"id"`
+	Scheduled *int64     `json:"scheduled,omitempty"`
 	UIDs      []string   `json:"uids,omitempty"`
 	SendAt    *time.Time `json:"send_at,omitempty"`
 }
 
 // NotificationListParams controls notification listing.
 type NotificationListParams struct {
-	ProjectID *int
-	Page      *int
+	ProjectID *int64
+	Page      *int64
 }
 
 // NotificationGetParams controls notification fetches.

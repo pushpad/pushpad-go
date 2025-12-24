@@ -19,7 +19,7 @@ func List(params *NotificationListParams) ([]Notification, error) {
 
 	query := url.Values{}
 	if params.Page != nil && *params.Page > 0 {
-		query.Set("page", strconv.Itoa(*params.Page))
+		query.Set("page", strconv.FormatInt(*params.Page, 10))
 	}
 
 	var notifications []Notification
@@ -48,7 +48,7 @@ func Send(params *NotificationCreateParams) (*NotificationCreateResponse, error)
 	return Create(params)
 }
 
-func Get(notificationID int, params *NotificationGetParams) (*Notification, error) {
+func Get(notificationID int64, params *NotificationGetParams) (*Notification, error) {
 	if notificationID == 0 {
 		return nil, fmt.Errorf("pushpad: notification ID is required")
 	}
@@ -60,7 +60,7 @@ func Get(notificationID int, params *NotificationGetParams) (*Notification, erro
 	return &notification, nil
 }
 
-func Cancel(notificationID int, params *NotificationCancelParams) error {
+func Cancel(notificationID int64, params *NotificationCancelParams) error {
 	if notificationID == 0 {
 		return fmt.Errorf("pushpad: notification ID is required")
 	}

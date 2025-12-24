@@ -12,8 +12,8 @@ func Bool(value bool) *bool {
 	return &value
 }
 
-// Int returns a pointer to an int value.
-func Int(value int) *int {
+// Int64 returns a pointer to an int64 value.
+func Int64(value int64) *int64 {
 	return &value
 }
 
