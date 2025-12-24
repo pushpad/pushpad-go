@@ -1,6 +1,7 @@
 package sender
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/h2non/gock"
@@ -46,6 +47,38 @@ func TestCreateSender(t *testing.T) {
 	}
 	if sender.ID != 5 {
 		t.Errorf("expected sender ID 5, got %d", sender.ID)
+	}
+}
+
+func TestCreateSenderWithAllFields(t *testing.T) {
+	defer gock.Off()
+
+	params := SenderCreateParams{
+		Name:            "My Sender",
+		VAPIDPrivateKey: "-----BEGIN EC PRIVATE KEY----- ...",
+		VAPIDPublicKey:  "-----BEGIN PUBLIC KEY----- ...",
+	}
+
+	senderJSON, err := json.Marshal(params)
+	if err != nil {
+		t.Fatalf("got an error: %s", err)
+	}
+
+	gock.New("https://pushpad.xyz").
+		Post("/api/v1/senders").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		BodyString(string(senderJSON)).
+		Reply(201).
+		BodyString(`{"id":12345,"name":"My Sender"}`)
+
+	pushpad.Configure("TOKEN", 123)
+	sender, err := Create(&params)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if sender.ID != 12345 {
+		t.Errorf("expected sender ID 12345, got %d", sender.ID)
 	}
 }
 

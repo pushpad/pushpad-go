@@ -1,6 +1,7 @@
 package project
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/h2non/gock"
@@ -51,6 +52,46 @@ func TestCreateProject(t *testing.T) {
 	}
 	if project.ID != 2 {
 		t.Errorf("expected project ID 2, got %d", project.ID)
+	}
+}
+
+func TestCreateProjectWithAllFields(t *testing.T) {
+	defer gock.Off()
+
+	notificationsTTL := 604800
+	requireInteraction := false
+	silent := false
+	params := ProjectCreateParams{
+		SenderID:                     98765,
+		Name:                         "My Project",
+		Website:                      "https://example.com",
+		IconURL:                      "https://example.com/icon.png",
+		BadgeURL:                     "https://example.com/badge.png",
+		NotificationsTTL:             &notificationsTTL,
+		NotificationsRequireInteract: &requireInteraction,
+		NotificationsSilent:          &silent,
+	}
+
+	projectJSON, err := json.Marshal(params)
+	if err != nil {
+		t.Fatalf("got an error: %s", err)
+	}
+
+	gock.New("https://pushpad.xyz").
+		Post("/api/v1/projects").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		BodyString(string(projectJSON)).
+		Reply(201).
+		BodyString(`{"id":12345,"name":"My Project","website":"https://example.com","sender_id":98765}`)
+
+	pushpad.Configure("TOKEN", 123)
+	project, err := Create(&params)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if project.ID != 12345 {
+		t.Errorf("expected project ID 12345, got %d", project.ID)
 	}
 }
 

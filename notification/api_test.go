@@ -3,6 +3,7 @@ package notification
 import (
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/h2non/gock"
 	"github.com/pushpad/pushpad-go"
@@ -70,6 +71,73 @@ func TestCreateNotification(t *testing.T) {
 	}
 	if response.Scheduled == nil || *response.Scheduled != 10 {
 		t.Errorf("expected scheduled count 10, got %v", response.Scheduled)
+	}
+}
+
+func TestCreateNotificationWithAllFields(t *testing.T) {
+	defer gock.Off()
+
+	sendAt, err := time.Parse(time.RFC3339Nano, "2016-07-06T10:09:00.000Z")
+	if err != nil {
+		t.Fatalf("expected no error parsing send_at, got %s", err)
+	}
+
+	ttl := 604800
+	requireInteraction := false
+	silent := false
+	urgent := false
+	starred := false
+	params := NotificationCreateParams{
+		ProjectID:          123,
+		Title:              "Foo Bar",
+		Body:               "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+		TargetURL:          "https://example.com",
+		IconURL:            "https://example.com/assets/icon.png",
+		BadgeURL:           "https://example.com/assets/badge.png",
+		ImageURL:           "https://example.com/assets/image.png",
+		TTL:                &ttl,
+		RequireInteraction: &requireInteraction,
+		Silent:             &silent,
+		Urgent:             &urgent,
+		CustomData:         "",
+		Actions: []NotificationAction{
+			{
+				Title:     "A button",
+				TargetURL: "https://example.com/button-link",
+				Icon:      "https://example.com/assets/button-icon.png",
+				Action:    "myActionName",
+			},
+		},
+		Starred:       &starred,
+		SendAt:        &sendAt,
+		CustomMetrics: []string{"metric1", "metric2"},
+		UIDs:          []string{"uid0", "uid1", "uidN"},
+		Tags:          []string{"tag1", "tagA && !tagB"},
+	}
+
+	notificationJSON, err := json.Marshal(params)
+	if err != nil {
+		t.Fatalf("got an error: %s", err)
+	}
+
+	gock.New("https://pushpad.xyz").
+		Post("/api/v1/projects/123/notifications").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		BodyString(string(notificationJSON)).
+		Reply(201).
+		BodyString(`{"id":123456789,"scheduled":9876}`)
+
+	pushpad.Configure("TOKEN", 0)
+	response, err := Create(&params)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if response.ID != 123456789 {
+		t.Errorf("expected notification ID 123456789, got %d", response.ID)
+	}
+	if response.Scheduled == nil || *response.Scheduled != 9876 {
+		t.Errorf("expected scheduled count 9876, got %v", response.Scheduled)
 	}
 }
 

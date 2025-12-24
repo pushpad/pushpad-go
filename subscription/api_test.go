@@ -1,6 +1,7 @@
 package subscription
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/h2non/gock"
@@ -84,6 +85,41 @@ func TestCreateSubscription(t *testing.T) {
 	}
 	if subscription.ID != 50 {
 		t.Errorf("expected subscription ID 50, got %d", subscription.ID)
+	}
+}
+
+func TestCreateSubscriptionWithAllFields(t *testing.T) {
+	defer gock.Off()
+
+	params := SubscriptionCreateParams{
+		ProjectID: 123,
+		Endpoint:  "https://example.com/push/f7Q1Eyf7EyfAb1",
+		P256DH:    "BCQVDTlYWdl05lal3lG5SKr3VxTrEWpZErbkxWrzknHrIKFwihDoZpc_2sH6Sh08h-CacUYI-H8gW4jH-uMYZQ4=",
+		Auth:      "cdKMlhgVeSPzCXZ3V7FtgQ==",
+		UID:       "user1",
+		Tags:      []string{"tag1", "tag2"},
+	}
+
+	subscriptionJSON, err := json.Marshal(params)
+	if err != nil {
+		t.Fatalf("got an error: %s", err)
+	}
+
+	gock.New("https://pushpad.xyz").
+		Post("/api/v1/projects/123/subscriptions").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		BodyString(string(subscriptionJSON)).
+		Reply(201).
+		BodyString(`{"id":12345,"endpoint":"https://example.com/push/f7Q1Eyf7EyfAb1"}`)
+
+	pushpad.Configure("TOKEN", 0)
+	subscription, err := Create(&params)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if subscription.ID != 12345 {
+		t.Errorf("expected subscription ID 12345, got %d", subscription.ID)
 	}
 }
 
