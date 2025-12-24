@@ -88,10 +88,26 @@ func TestCreateSubscription(t *testing.T) {
 }
 
 func TestCreateSubscriptionMissingEndpoint(t *testing.T) {
+	defer gock.Off()
+
+	gock.New("https://pushpad.xyz").
+		Post("/api/v1/projects/123/subscriptions").
+		MatchHeader("Content-Type", "application/json").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		Reply(422).
+		BodyString(`{"error":"validation error"}`)
+
 	pushpad.Configure("TOKEN", 0)
 	_, err := Create(&SubscriptionCreateParams{ProjectID: 123})
-	if err == nil {
-		t.Fatalf("expected error for missing endpoint")
+	apiErr, ok := err.(*pushpad.APIError)
+	if !ok {
+		t.Fatalf("expected APIError, got %T", err)
+	}
+	if apiErr.StatusCode != 422 {
+		t.Errorf("expected status 422, got %d", apiErr.StatusCode)
+	}
+	if apiErr.Body != `{"error":"validation error"}` {
+		t.Errorf("expected validation error body, got %q", apiErr.Body)
 	}
 }
 
