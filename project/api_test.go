@@ -72,7 +72,7 @@ func TestGetProject(t *testing.T) {
 		BodyString(`{"id":2,"name":"New Project"}`)
 
 	pushpad.Configure("TOKEN", 123)
-	project, err := Get(2)
+	project, err := Get(2, nil)
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -111,7 +111,7 @@ func TestDeleteProject(t *testing.T) {
 		Reply(202)
 
 	pushpad.Configure("TOKEN", 123)
-	if err := Delete(2); err != nil {
+	if err := Delete(2, nil); err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
 }

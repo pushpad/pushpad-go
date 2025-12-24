@@ -41,3 +41,9 @@ type ProjectUpdateParams struct {
 
 // ProjectListParams controls project listing.
 type ProjectListParams struct{}
+
+// ProjectGetParams controls project fetches.
+type ProjectGetParams struct{}
+
+// ProjectDeleteParams controls project deletes.
+type ProjectDeleteParams struct{}

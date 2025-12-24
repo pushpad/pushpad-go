@@ -148,7 +148,7 @@ func TestGetNotification(t *testing.T) {
 		BodyString(`{"id":77,"body":"Hello"}`)
 
 	pushpad.Configure("TOKEN", 123)
-	notification, err := Get(77)
+	notification, err := Get(77, nil)
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -166,7 +166,7 @@ func TestCancelNotification(t *testing.T) {
 		Reply(204)
 
 	pushpad.Configure("TOKEN", 123)
-	if err := Cancel(77); err != nil {
+	if err := Cancel(77, nil); err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
 }

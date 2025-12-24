@@ -74,3 +74,9 @@ type NotificationListParams struct {
 	ProjectID int
 	Page      int
 }
+
+// NotificationGetParams controls notification fetches.
+type NotificationGetParams struct{}
+
+// NotificationCancelParams controls notification cancels.
+type NotificationCancelParams struct{}

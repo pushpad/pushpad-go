@@ -67,7 +67,7 @@ func TestGetSender(t *testing.T) {
 		BodyString(`{"id":5,"name":"New Sender"}`)
 
 	pushpad.Configure("TOKEN", 123)
-	sender, err := Get(5)
+	sender, err := Get(5, nil)
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
@@ -106,7 +106,7 @@ func TestDeleteSender(t *testing.T) {
 		Reply(204)
 
 	pushpad.Configure("TOKEN", 123)
-	if err := Delete(5); err != nil {
+	if err := Delete(5, nil); err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
 }

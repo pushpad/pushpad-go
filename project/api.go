@@ -34,7 +34,7 @@ func Create(project *ProjectCreateParams) (*Project, error) {
 	return &created, nil
 }
 
-func Get(projectID int) (*Project, error) {
+func Get(projectID int, params *ProjectGetParams) (*Project, error) {
 	if projectID == 0 {
 		return nil, fmt.Errorf("pushpad: project ID is required")
 	}
@@ -63,7 +63,7 @@ func Update(projectID int, update *ProjectUpdateParams) (*Project, error) {
 	return &project, nil
 }
 
-func Delete(projectID int) error {
+func Delete(projectID int, params *ProjectDeleteParams) error {
 	if projectID == 0 {
 		return fmt.Errorf("pushpad: project ID is required")
 	}

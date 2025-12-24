@@ -28,7 +28,7 @@ func Create(sender *SenderCreateParams) (*Sender, error) {
 	return &created, nil
 }
 
-func Get(senderID int) (*Sender, error) {
+func Get(senderID int, params *SenderGetParams) (*Sender, error) {
 	if senderID == 0 {
 		return nil, fmt.Errorf("pushpad: sender ID is required")
 	}
@@ -57,7 +57,7 @@ func Update(senderID int, update *SenderUpdateParams) (*Sender, error) {
 	return &sender, nil
 }
 
-func Delete(senderID int) error {
+func Delete(senderID int, params *SenderDeleteParams) error {
 	if senderID == 0 {
 		return fmt.Errorf("pushpad: sender ID is required")
 	}

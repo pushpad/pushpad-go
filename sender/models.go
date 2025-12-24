@@ -25,3 +25,9 @@ type SenderUpdateParams struct {
 
 // SenderListParams controls sender listing.
 type SenderListParams struct{}
+
+// SenderGetParams controls sender fetches.
+type SenderGetParams struct{}
+
+// SenderDeleteParams controls sender deletes.
+type SenderDeleteParams struct{}
