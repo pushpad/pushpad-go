@@ -54,9 +54,6 @@ func Create(params *SubscriptionCreateParams) (*Subscription, error) {
 	if params == nil {
 		return nil, fmt.Errorf("pushpad: params are required")
 	}
-	if params.Endpoint == "" {
-		return nil, fmt.Errorf("pushpad: params.Endpoint is required")
-	}
 	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
 		return nil, err

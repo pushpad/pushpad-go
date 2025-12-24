@@ -32,9 +32,6 @@ func Create(params *NotificationCreateParams) (*NotificationCreateResponse, erro
 	if params == nil {
 		return nil, fmt.Errorf("pushpad: params are required")
 	}
-	if params.Body == "" {
-		return nil, fmt.Errorf("pushpad: params.Body is required")
-	}
 	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
 		return nil, err

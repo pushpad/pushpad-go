@@ -16,9 +16,6 @@ func Create(params *SenderCreateParams) (*Sender, error) {
 	if params == nil {
 		return nil, fmt.Errorf("pushpad: params are required")
 	}
-	if params.Name == "" {
-		return nil, fmt.Errorf("pushpad: params.Name is required")
-	}
 
 	var created Sender
 	_, err := pushpad.DoRequest("POST", "/senders", nil, params, []int{201}, &created)

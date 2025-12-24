@@ -16,15 +16,6 @@ func Create(params *ProjectCreateParams) (*Project, error) {
 	if params == nil {
 		return nil, fmt.Errorf("pushpad: params are required")
 	}
-	if params.SenderID == 0 {
-		return nil, fmt.Errorf("pushpad: sender ID is required")
-	}
-	if params.Name == "" {
-		return nil, fmt.Errorf("pushpad: params.Name is required")
-	}
-	if params.Website == "" {
-		return nil, fmt.Errorf("pushpad: params.Website is required")
-	}
 
 	var created Project
 	_, err := pushpad.DoRequest("POST", "/projects", nil, params, []int{201}, &created)
