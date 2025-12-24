@@ -10,10 +10,10 @@ type Project struct {
 	Website                      string     `json:"website,omitempty"`
 	IconURL                      string     `json:"icon_url,omitempty"`
 	BadgeURL                     string     `json:"badge_url,omitempty"`
-	NotificationsTTL             *int64     `json:"notifications_ttl,omitempty"`
-	NotificationsRequireInteract *bool      `json:"notifications_require_interaction,omitempty"`
-	NotificationsSilent          *bool      `json:"notifications_silent,omitempty"`
-	CreatedAt                    *time.Time `json:"created_at,omitempty"`
+	NotificationsTTL             int64      `json:"notifications_ttl,omitempty"`
+	NotificationsRequireInteract bool       `json:"notifications_require_interaction,omitempty"`
+	NotificationsSilent          bool       `json:"notifications_silent,omitempty"`
+	CreatedAt                    time.Time  `json:"created_at,omitempty"`
 }
 
 // ProjectCreateParams is the payload to create a project.

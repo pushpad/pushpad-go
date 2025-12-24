@@ -8,7 +8,7 @@ type Sender struct {
 	Name            string     `json:"name,omitempty"`
 	VAPIDPrivateKey string     `json:"vapid_private_key,omitempty"`
 	VAPIDPublicKey  string     `json:"vapid_public_key,omitempty"`
-	CreatedAt       *time.Time `json:"created_at,omitempty"`
+	CreatedAt       time.Time  `json:"created_at,omitempty"`
 }
 
 // SenderCreateParams is the payload to create a sender.
