@@ -3,6 +3,7 @@ package sender
 import (
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/h2non/gock"
 	"github.com/pushpad/pushpad-go"
@@ -122,6 +123,42 @@ func TestGetSender(t *testing.T) {
 	}
 	if sender.ID != 5 {
 		t.Errorf("expected sender ID 5, got %d", sender.ID)
+	}
+}
+
+func TestGetSenderWithAllFields(t *testing.T) {
+	defer gock.Off()
+
+	createdAt, err := time.Parse(time.RFC3339Nano, "2016-07-06T10:58:39.192Z")
+	if err != nil {
+		t.Fatalf("expected no error parsing created_at, got %s", err)
+	}
+
+	gock.New("https://pushpad.xyz").
+		Get("/api/v1/senders/98765").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		Reply(200).
+		BodyString(`{"id":98765,"name":"My Sender","vapid_private_key":"-----BEGIN EC PRIVATE KEY----- ...","vapid_public_key":"-----BEGIN PUBLIC KEY----- ...","created_at":"2016-07-06T10:58:39.192Z"}`)
+
+	pushpad.Configure("TOKEN", 123)
+	sender, err := Get(98765, nil)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if sender.ID != 98765 {
+		t.Errorf("expected sender ID 98765, got %d", sender.ID)
+	}
+	if sender.Name != "My Sender" {
+		t.Errorf("expected name My Sender, got %q", sender.Name)
+	}
+	if sender.VAPIDPrivateKey != "-----BEGIN EC PRIVATE KEY----- ..." {
+		t.Errorf("expected VAPID private key value, got %q", sender.VAPIDPrivateKey)
+	}
+	if sender.VAPIDPublicKey != "-----BEGIN PUBLIC KEY----- ..." {
+		t.Errorf("expected VAPID public key value, got %q", sender.VAPIDPublicKey)
+	}
+	if !sender.CreatedAt.Equal(createdAt) {
+		t.Errorf("expected created_at %s, got %s", createdAt.Format(time.RFC3339Nano), sender.CreatedAt.Format(time.RFC3339Nano))
 	}
 }
 

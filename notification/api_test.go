@@ -69,8 +69,8 @@ func TestCreateNotification(t *testing.T) {
 	if response.ID != 99 {
 		t.Errorf("expected notification ID 99, got %d", response.ID)
 	}
-	if response.Scheduled == nil || *response.Scheduled != 10 {
-		t.Errorf("expected scheduled count 10, got %v", response.Scheduled)
+	if response.Scheduled != 10 {
+		t.Errorf("expected scheduled count 10, got %d", response.Scheduled)
 	}
 }
 
@@ -131,8 +131,8 @@ func TestCreateNotificationWithAllFields(t *testing.T) {
 	if response.ID != 123456789 {
 		t.Errorf("expected notification ID 123456789, got %d", response.ID)
 	}
-	if response.Scheduled == nil || *response.Scheduled != 9876 {
-		t.Errorf("expected scheduled count 9876, got %v", response.Scheduled)
+	if response.Scheduled != 9876 {
+		t.Errorf("expected scheduled count 9876, got %d", response.Scheduled)
 	}
 }
 
@@ -233,6 +233,119 @@ func TestGetNotification(t *testing.T) {
 	}
 	if notification.ID != 77 {
 		t.Errorf("expected notification ID 77, got %d", notification.ID)
+	}
+}
+
+func TestGetNotificationWithAllFields(t *testing.T) {
+	defer gock.Off()
+
+	sendAt, err := time.Parse(time.RFC3339Nano, "2016-07-06T10:09:00.000Z")
+	if err != nil {
+		t.Fatalf("expected no error parsing send_at, got %s", err)
+	}
+
+	createdAt, err := time.Parse(time.RFC3339Nano, "2016-07-06T10:58:39.192Z")
+	if err != nil {
+		t.Fatalf("expected no error parsing created_at, got %s", err)
+	}
+
+	gock.New("https://pushpad.xyz").
+		Get("/api/v1/notifications/123456789").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		Reply(200).
+		BodyString(`{"id":123456789,"project_id":123,"title":"Foo Bar","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.","target_url":"https://example.com","icon_url":"https://example.com/assets/icon.png","badge_url":"https://example.com/assets/badge.png","image_url":"https://example.com/assets/image.png","ttl":604800,"require_interaction":false,"silent":false,"urgent":false,"custom_data":"","actions":[{"title":"A button","target_url":"https://example.com/button-link","icon":"https://example.com/assets/button-icon.png","action":"myActionName"}],"starred":false,"send_at":"2016-07-06T10:09:00.000Z","custom_metrics":["metric1","metric2"],"uids":["uid0","uid1","uidN"],"tags":["tag1","tagA && !tagB"],"created_at":"2016-07-06T10:58:39.192Z","successfully_sent_count":4,"opened_count":1,"scheduled_count":400,"scheduled":true,"cancelled":false}`)
+
+	pushpad.Configure("TOKEN", 123)
+	notification, err := Get(123456789, nil)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if notification.ID != 123456789 {
+		t.Errorf("expected notification ID 123456789, got %d", notification.ID)
+	}
+	if notification.ProjectID != 123 {
+		t.Errorf("expected project ID 123, got %d", notification.ProjectID)
+	}
+	if notification.Title != "Foo Bar" {
+		t.Errorf("expected title Foo Bar, got %q", notification.Title)
+	}
+	if notification.Body != "Lorem ipsum dolor sit amet, consectetur adipiscing elit." {
+		t.Errorf("expected body Lorem ipsum..., got %q", notification.Body)
+	}
+	if notification.TargetURL != "https://example.com" {
+		t.Errorf("expected target_url https://example.com, got %q", notification.TargetURL)
+	}
+	if notification.IconURL != "https://example.com/assets/icon.png" {
+		t.Errorf("expected icon_url https://example.com/assets/icon.png, got %q", notification.IconURL)
+	}
+	if notification.BadgeURL != "https://example.com/assets/badge.png" {
+		t.Errorf("expected badge_url https://example.com/assets/badge.png, got %q", notification.BadgeURL)
+	}
+	if notification.ImageURL != "https://example.com/assets/image.png" {
+		t.Errorf("expected image_url https://example.com/assets/image.png, got %q", notification.ImageURL)
+	}
+	if notification.TTL != 604800 {
+		t.Errorf("expected ttl 604800, got %d", notification.TTL)
+	}
+	if notification.RequireInteraction != false {
+		t.Errorf("expected require_interaction false, got %v", notification.RequireInteraction)
+	}
+	if notification.Silent != false {
+		t.Errorf("expected silent false, got %v", notification.Silent)
+	}
+	if notification.Urgent != false {
+		t.Errorf("expected urgent false, got %v", notification.Urgent)
+	}
+	if notification.CustomData != "" {
+		t.Errorf("expected custom_data empty string, got %q", notification.CustomData)
+	}
+	if len(notification.Actions) != 1 {
+		t.Fatalf("expected 1 action, got %d", len(notification.Actions))
+	}
+	if notification.Actions[0].Title == nil || *notification.Actions[0].Title != "A button" {
+		t.Errorf("expected action title A button, got %v", notification.Actions[0].Title)
+	}
+	if notification.Actions[0].TargetURL == nil || *notification.Actions[0].TargetURL != "https://example.com/button-link" {
+		t.Errorf("expected action target_url https://example.com/button-link, got %v", notification.Actions[0].TargetURL)
+	}
+	if notification.Actions[0].Icon == nil || *notification.Actions[0].Icon != "https://example.com/assets/button-icon.png" {
+		t.Errorf("expected action icon https://example.com/assets/button-icon.png, got %v", notification.Actions[0].Icon)
+	}
+	if notification.Actions[0].Action == nil || *notification.Actions[0].Action != "myActionName" {
+		t.Errorf("expected action myActionName, got %v", notification.Actions[0].Action)
+	}
+	if notification.Starred != false {
+		t.Errorf("expected starred false, got %v", notification.Starred)
+	}
+	if notification.SendAt == nil || !notification.SendAt.Equal(sendAt) {
+		t.Errorf("expected send_at %s, got %v", sendAt.Format(time.RFC3339Nano), notification.SendAt)
+	}
+	if len(notification.CustomMetrics) != 2 || notification.CustomMetrics[0] != "metric1" || notification.CustomMetrics[1] != "metric2" {
+		t.Errorf("expected custom_metrics [metric1 metric2], got %v", notification.CustomMetrics)
+	}
+	if len(notification.UIDs) != 3 || notification.UIDs[0] != "uid0" || notification.UIDs[1] != "uid1" || notification.UIDs[2] != "uidN" {
+		t.Errorf("expected uids [uid0 uid1 uidN], got %v", notification.UIDs)
+	}
+	if len(notification.Tags) != 2 || notification.Tags[0] != "tag1" || notification.Tags[1] != "tagA && !tagB" {
+		t.Errorf("expected tags [tag1 tagA && !tagB], got %v", notification.Tags)
+	}
+	if !notification.CreatedAt.Equal(createdAt) {
+		t.Errorf("expected created_at %s, got %s", createdAt.Format(time.RFC3339Nano), notification.CreatedAt.Format(time.RFC3339Nano))
+	}
+	if notification.SuccessfullySent != 4 {
+		t.Errorf("expected successfully_sent_count 4, got %d", notification.SuccessfullySent)
+	}
+	if notification.OpenedCount != 1 {
+		t.Errorf("expected opened_count 1, got %d", notification.OpenedCount)
+	}
+	if notification.ScheduledCount != 400 {
+		t.Errorf("expected scheduled_count 400, got %d", notification.ScheduledCount)
+	}
+	if notification.Scheduled != true {
+		t.Errorf("expected scheduled true, got %v", notification.Scheduled)
+	}
+	if notification.Cancelled != false {
+		t.Errorf("expected cancelled false, got %v", notification.Cancelled)
 	}
 }
 

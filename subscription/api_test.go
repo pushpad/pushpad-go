@@ -3,6 +3,7 @@ package subscription
 import (
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/h2non/gock"
 	"github.com/pushpad/pushpad-go"
@@ -163,6 +164,59 @@ func TestGetSubscription(t *testing.T) {
 	}
 	if subscription.ID != 50 {
 		t.Errorf("expected subscription ID 50, got %d", subscription.ID)
+	}
+}
+
+func TestGetSubscriptionWithAllFields(t *testing.T) {
+	defer gock.Off()
+
+	lastClickAt, err := time.Parse(time.RFC3339Nano, "2016-07-06T10:09:00.000Z")
+	if err != nil {
+		t.Fatalf("expected no error parsing last_click_at, got %s", err)
+	}
+
+	createdAt, err := time.Parse(time.RFC3339Nano, "2016-07-06T10:58:39.192Z")
+	if err != nil {
+		t.Fatalf("expected no error parsing created_at, got %s", err)
+	}
+
+	gock.New("https://pushpad.xyz").
+		Get("/api/v1/projects/123/subscriptions/456").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		Reply(200).
+		BodyString(`{"id":456,"project_id":123,"endpoint":"https://example.com/push/f7Q1Eyf7EyfAb1","p256dh":"BCQVDTlYWdl05lal3lG5SKr3VxTrEWpZErbkxWrzknHrIKFwihDoZpc_2sH6Sh08h-CacUYI-H8gW4jH-uMYZQ4=","auth":"cdKMlhgVeSPzCXZ3V7FtgQ==","uid":"user1","tags":["tag1","tag2"],"last_click_at":"2016-07-06T10:09:00.000Z","created_at":"2016-07-06T10:58:39.192Z"}`)
+
+	pushpad.Configure("TOKEN", 0)
+	subscription, err := Get(456, &SubscriptionGetParams{ProjectID: pushpad.Int64(123)})
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if subscription.ID != 456 {
+		t.Errorf("expected subscription ID 456, got %d", subscription.ID)
+	}
+	if subscription.ProjectID != 123 {
+		t.Errorf("expected project ID 123, got %d", subscription.ProjectID)
+	}
+	if subscription.Endpoint != "https://example.com/push/f7Q1Eyf7EyfAb1" {
+		t.Errorf("expected endpoint https://example.com/push/f7Q1Eyf7EyfAb1, got %q", subscription.Endpoint)
+	}
+	if subscription.P256DH != "BCQVDTlYWdl05lal3lG5SKr3VxTrEWpZErbkxWrzknHrIKFwihDoZpc_2sH6Sh08h-CacUYI-H8gW4jH-uMYZQ4=" {
+		t.Errorf("expected p256dh value, got %q", subscription.P256DH)
+	}
+	if subscription.Auth != "cdKMlhgVeSPzCXZ3V7FtgQ==" {
+		t.Errorf("expected auth cdKMlhgVeSPzCXZ3V7FtgQ==, got %q", subscription.Auth)
+	}
+	if subscription.UID != "user1" {
+		t.Errorf("expected uid user1, got %q", subscription.UID)
+	}
+	if len(subscription.Tags) != 2 || subscription.Tags[0] != "tag1" || subscription.Tags[1] != "tag2" {
+		t.Errorf("expected tags [tag1 tag2], got %v", subscription.Tags)
+	}
+	if subscription.LastClickAt == nil || !subscription.LastClickAt.Equal(lastClickAt) {
+		t.Errorf("expected last_click_at %s, got %v", lastClickAt.Format(time.RFC3339Nano), subscription.LastClickAt)
+	}
+	if !subscription.CreatedAt.Equal(createdAt) {
+		t.Errorf("expected created_at %s, got %s", createdAt.Format(time.RFC3339Nano), subscription.CreatedAt.Format(time.RFC3339Nano))
 	}
 }
 
