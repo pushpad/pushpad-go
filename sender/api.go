@@ -12,16 +12,16 @@ func List(params *SenderListParams) ([]Sender, error) {
 	return senders, err
 }
 
-func Create(sender *SenderCreateParams) (*Sender, error) {
-	if sender == nil {
-		return nil, fmt.Errorf("pushpad: sender is required")
+func Create(params *SenderCreateParams) (*Sender, error) {
+	if params == nil {
+		return nil, fmt.Errorf("pushpad: params are required")
 	}
-	if sender.Name == "" {
-		return nil, fmt.Errorf("pushpad: sender name is required")
+	if params.Name == "" {
+		return nil, fmt.Errorf("pushpad: params.Name is required")
 	}
 
 	var created Sender
-	_, err := pushpad.DoRequest("POST", "/senders", nil, sender, []int{201}, &created)
+	_, err := pushpad.DoRequest("POST", "/senders", nil, params, []int{201}, &created)
 	if err != nil {
 		return nil, err
 	}
@@ -41,16 +41,16 @@ func Get(senderID int, params *SenderGetParams) (*Sender, error) {
 	return &sender, nil
 }
 
-func Update(senderID int, update *SenderUpdateParams) (*Sender, error) {
-	if update == nil {
-		return nil, fmt.Errorf("pushpad: sender update is required")
+func Update(senderID int, params *SenderUpdateParams) (*Sender, error) {
+	if params == nil {
+		return nil, fmt.Errorf("pushpad: params are required")
 	}
 	if senderID == 0 {
 		return nil, fmt.Errorf("pushpad: sender ID is required")
 	}
 
 	var sender Sender
-	_, err := pushpad.DoRequest("PATCH", fmt.Sprintf("/senders/%d", senderID), nil, update, []int{200}, &sender)
+	_, err := pushpad.DoRequest("PATCH", fmt.Sprintf("/senders/%d", senderID), nil, params, []int{200}, &sender)
 	if err != nil {
 		return nil, err
 	}

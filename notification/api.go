@@ -28,20 +28,20 @@ func List(params *NotificationListParams) ([]Notification, error) {
 	return notifications, err
 }
 
-func Create(notification *NotificationCreateParams) (*NotificationCreateResponse, error) {
-	if notification == nil {
-		return nil, fmt.Errorf("pushpad: notification is required")
+func Create(params *NotificationCreateParams) (*NotificationCreateResponse, error) {
+	if params == nil {
+		return nil, fmt.Errorf("pushpad: params are required")
 	}
-	if notification.Body == "" {
-		return nil, fmt.Errorf("pushpad: notification body is required")
+	if params.Body == "" {
+		return nil, fmt.Errorf("pushpad: params.Body is required")
 	}
-	projectID, err := pushpad.ResolveProjectID(notification.ProjectID)
+	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
 		return nil, err
 	}
 
 	var response NotificationCreateResponse
-	_, err = pushpad.DoRequest("POST", fmt.Sprintf("/projects/%d/notifications", projectID), nil, notification, []int{201}, &response)
+	_, err = pushpad.DoRequest("POST", fmt.Sprintf("/projects/%d/notifications", projectID), nil, params, []int{201}, &response)
 	if err != nil {
 		return nil, err
 	}

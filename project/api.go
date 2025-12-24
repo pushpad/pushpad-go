@@ -12,22 +12,22 @@ func List(params *ProjectListParams) ([]Project, error) {
 	return projects, err
 }
 
-func Create(project *ProjectCreateParams) (*Project, error) {
-	if project == nil {
-		return nil, fmt.Errorf("pushpad: project is required")
+func Create(params *ProjectCreateParams) (*Project, error) {
+	if params == nil {
+		return nil, fmt.Errorf("pushpad: params are required")
 	}
-	if project.SenderID == 0 {
+	if params.SenderID == 0 {
 		return nil, fmt.Errorf("pushpad: sender ID is required")
 	}
-	if project.Name == "" {
-		return nil, fmt.Errorf("pushpad: project name is required")
+	if params.Name == "" {
+		return nil, fmt.Errorf("pushpad: params.Name is required")
 	}
-	if project.Website == "" {
-		return nil, fmt.Errorf("pushpad: project website is required")
+	if params.Website == "" {
+		return nil, fmt.Errorf("pushpad: params.Website is required")
 	}
 
 	var created Project
-	_, err := pushpad.DoRequest("POST", "/projects", nil, project, []int{201}, &created)
+	_, err := pushpad.DoRequest("POST", "/projects", nil, params, []int{201}, &created)
 	if err != nil {
 		return nil, err
 	}
@@ -47,16 +47,16 @@ func Get(projectID int, params *ProjectGetParams) (*Project, error) {
 	return &project, nil
 }
 
-func Update(projectID int, update *ProjectUpdateParams) (*Project, error) {
-	if update == nil {
-		return nil, fmt.Errorf("pushpad: project update is required")
+func Update(projectID int, params *ProjectUpdateParams) (*Project, error) {
+	if params == nil {
+		return nil, fmt.Errorf("pushpad: params are required")
 	}
 	if projectID == 0 {
 		return nil, fmt.Errorf("pushpad: project ID is required")
 	}
 
 	var project Project
-	_, err := pushpad.DoRequest("PATCH", fmt.Sprintf("/projects/%d", projectID), nil, update, []int{200}, &project)
+	_, err := pushpad.DoRequest("PATCH", fmt.Sprintf("/projects/%d", projectID), nil, params, []int{200}, &project)
 	if err != nil {
 		return nil, err
 	}
