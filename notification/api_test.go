@@ -352,6 +352,49 @@ func TestGetNotificationWithAllFields(t *testing.T) {
 	}
 }
 
+func TestGetNotificationWithNullFields(t *testing.T) {
+	defer gock.Off()
+
+	gock.New("https://pushpad.xyz").
+		Get("/api/v1/notifications/88").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		Reply(200).
+		BodyString(`{"id":88,"body":"Hello","image_url":null,"custom_data":null,"actions":null,"send_at":null,"custom_metrics":null,"uids":null,"tags":null,"scheduled_count":null,"scheduled":null}`)
+
+	pushpad.Configure("TOKEN", 123)
+	notification, err := Get(88, nil)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if notification.ImageURL != "" {
+		t.Errorf("expected image_url empty string, got %q", notification.ImageURL)
+	}
+	if notification.CustomData != "" {
+		t.Errorf("expected custom_data empty string, got %q", notification.CustomData)
+	}
+	if notification.Actions != nil {
+		t.Errorf("expected actions nil, got %v", notification.Actions)
+	}
+	if !notification.SendAt.IsZero() {
+		t.Errorf("expected send_at zero value, got %s", notification.SendAt)
+	}
+	if notification.CustomMetrics != nil {
+		t.Errorf("expected custom_metrics nil, got %v", notification.CustomMetrics)
+	}
+	if notification.UIDs != nil {
+		t.Errorf("expected uids nil, got %v", notification.UIDs)
+	}
+	if notification.Tags != nil {
+		t.Errorf("expected tags nil, got %v", notification.Tags)
+	}
+	if notification.ScheduledCount != 0 {
+		t.Errorf("expected scheduled_count 0, got %d", notification.ScheduledCount)
+	}
+	if notification.Scheduled != false {
+		t.Errorf("expected scheduled false, got %v", notification.Scheduled)
+	}
+}
+
 func TestCancelNotification(t *testing.T) {
 	defer gock.Off()
 
