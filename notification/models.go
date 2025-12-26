@@ -2,12 +2,12 @@ package notification
 
 import "time"
 
-// NotificationAction represents a notification action button.
+// NotificationAction represents a notification action button in responses.
 type NotificationAction struct {
-	Title     *string `json:"title,omitempty"`
-	TargetURL *string `json:"target_url,omitempty"`
-	Icon      *string `json:"icon,omitempty"`
-	Action    *string `json:"action,omitempty"`
+	Title     string `json:"title,omitempty"`
+	TargetURL string `json:"target_url,omitempty"`
+	Icon      string `json:"icon,omitempty"`
+	Action    string `json:"action,omitempty"`
 }
 
 // Notification represents a Pushpad notification.
@@ -39,6 +39,14 @@ type Notification struct {
 	Cancelled          bool                 `json:"cancelled,omitempty"`
 }
 
+// NotificationActionParams represents a notification action button in create payloads.
+type NotificationActionParams struct {
+	Title     *string `json:"title,omitempty"`
+	TargetURL *string `json:"target_url,omitempty"`
+	Icon      *string `json:"icon,omitempty"`
+	Action    *string `json:"action,omitempty"`
+}
+
 // NotificationCreateParams represents a notification create payload.
 type NotificationCreateParams struct {
 	ProjectID          *int64                `json:"-"`
@@ -53,7 +61,7 @@ type NotificationCreateParams struct {
 	Silent             *bool                 `json:"silent,omitempty"`
 	Urgent             *bool                 `json:"urgent,omitempty"`
 	CustomData         *string               `json:"custom_data,omitempty"`
-	Actions            *[]NotificationAction `json:"actions,omitempty"`
+	Actions            *[]NotificationActionParams `json:"actions,omitempty"`
 	Starred            *bool                 `json:"starred,omitempty"`
 	SendAt             *time.Time            `json:"send_at,omitempty"`
 	CustomMetrics      *[]string             `json:"custom_metrics,omitempty"`

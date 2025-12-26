@@ -96,7 +96,7 @@ func TestCreateNotificationWithAllFields(t *testing.T) {
 		Urgent:             pushpad.Bool(false),
 		CustomData:         pushpad.String(""),
 		Actions: Actions(
-			NotificationAction{
+			NotificationActionParams{
 				Title:     pushpad.String("A button"),
 				TargetURL: pushpad.String("https://example.com/button-link"),
 				Icon:      pushpad.String("https://example.com/assets/button-icon.png"),
@@ -302,16 +302,16 @@ func TestGetNotificationWithAllFields(t *testing.T) {
 	if len(notification.Actions) != 1 {
 		t.Fatalf("expected 1 action, got %d", len(notification.Actions))
 	}
-	if notification.Actions[0].Title == nil || *notification.Actions[0].Title != "A button" {
+	if notification.Actions[0].Title != "A button" {
 		t.Errorf("expected action title A button, got %v", notification.Actions[0].Title)
 	}
-	if notification.Actions[0].TargetURL == nil || *notification.Actions[0].TargetURL != "https://example.com/button-link" {
+	if notification.Actions[0].TargetURL != "https://example.com/button-link" {
 		t.Errorf("expected action target_url https://example.com/button-link, got %v", notification.Actions[0].TargetURL)
 	}
-	if notification.Actions[0].Icon == nil || *notification.Actions[0].Icon != "https://example.com/assets/button-icon.png" {
+	if notification.Actions[0].Icon != "https://example.com/assets/button-icon.png" {
 		t.Errorf("expected action icon https://example.com/assets/button-icon.png, got %v", notification.Actions[0].Icon)
 	}
-	if notification.Actions[0].Action == nil || *notification.Actions[0].Action != "myActionName" {
+	if notification.Actions[0].Action != "myActionName" {
 		t.Errorf("expected action myActionName, got %v", notification.Actions[0].Action)
 	}
 	if notification.Starred != false {
