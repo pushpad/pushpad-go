@@ -1,4 +1,4 @@
-module github.com/pushpad/pushpad-go
+module github.com/pushpad/pushpad-go/v1
 
 go 1.25
 

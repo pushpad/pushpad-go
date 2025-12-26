@@ -3,7 +3,7 @@ package project
 import (
 	"fmt"
 
-	"github.com/pushpad/pushpad-go"
+	"github.com/pushpad/pushpad-go/v1"
 )
 
 func List(params *ProjectListParams) ([]Project, error) {

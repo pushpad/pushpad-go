@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/h2non/gock"
-	"github.com/pushpad/pushpad-go"
+	"github.com/pushpad/pushpad-go/v1"
 )
 
 func TestListSenders(t *testing.T) {
