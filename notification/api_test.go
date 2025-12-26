@@ -95,14 +95,14 @@ func TestCreateNotificationWithAllFields(t *testing.T) {
 		Silent:             pushpad.Bool(false),
 		Urgent:             pushpad.Bool(false),
 		CustomData:         pushpad.String(""),
-		Actions: Actions(
-			NotificationActionParams{
+		Actions: &[]NotificationActionParams{
+			{
 				Title:     pushpad.String("A button"),
 				TargetURL: pushpad.String("https://example.com/button-link"),
 				Icon:      pushpad.String("https://example.com/assets/button-icon.png"),
 				Action:    pushpad.String("myActionName"),
 			},
-		),
+		},
 		Starred:       pushpad.Bool(false),
 		SendAt:        pushpad.Time(sendAt),
 		CustomMetrics: pushpad.Strings([]string{"metric1", "metric2"}),
