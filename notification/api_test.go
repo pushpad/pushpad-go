@@ -72,6 +72,9 @@ func TestCreateNotification(t *testing.T) {
 	if response.Scheduled != 10 {
 		t.Errorf("expected scheduled count 10, got %d", response.Scheduled)
 	}
+	if !response.SendAt.IsZero() {
+		t.Errorf("expected send_at to be zero value, got %s", response.SendAt)
+	}
 }
 
 func TestCreateNotificationWithAllFields(t *testing.T) {
