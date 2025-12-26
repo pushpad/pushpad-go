@@ -317,8 +317,8 @@ func TestGetNotificationWithAllFields(t *testing.T) {
 	if notification.Starred != false {
 		t.Errorf("expected starred false, got %v", notification.Starred)
 	}
-	if notification.SendAt == nil || !notification.SendAt.Equal(sendAt) {
-		t.Errorf("expected send_at %s, got %v", sendAt.Format(time.RFC3339Nano), notification.SendAt)
+	if !notification.SendAt.Equal(sendAt) {
+		t.Errorf("expected send_at %s, got %s", sendAt.Format(time.RFC3339Nano), notification.SendAt.Format(time.RFC3339Nano))
 	}
 	if len(notification.CustomMetrics) != 2 || notification.CustomMetrics[0] != "metric1" || notification.CustomMetrics[1] != "metric2" {
 		t.Errorf("expected custom_metrics [metric1 metric2], got %v", notification.CustomMetrics)

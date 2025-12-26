@@ -212,8 +212,8 @@ func TestGetSubscriptionWithAllFields(t *testing.T) {
 	if len(subscription.Tags) != 2 || subscription.Tags[0] != "tag1" || subscription.Tags[1] != "tag2" {
 		t.Errorf("expected tags [tag1 tag2], got %v", subscription.Tags)
 	}
-	if subscription.LastClickAt == nil || !subscription.LastClickAt.Equal(lastClickAt) {
-		t.Errorf("expected last_click_at %s, got %v", lastClickAt.Format(time.RFC3339Nano), subscription.LastClickAt)
+	if !subscription.LastClickAt.Equal(lastClickAt) {
+		t.Errorf("expected last_click_at %s, got %s", lastClickAt.Format(time.RFC3339Nano), subscription.LastClickAt.Format(time.RFC3339Nano))
 	}
 	if !subscription.CreatedAt.Equal(createdAt) {
 		t.Errorf("expected created_at %s, got %s", createdAt.Format(time.RFC3339Nano), subscription.CreatedAt.Format(time.RFC3339Nano))

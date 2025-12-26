@@ -27,7 +27,7 @@ type Notification struct {
 	CustomData         string               `json:"custom_data,omitempty"`
 	Actions            []NotificationAction `json:"actions,omitempty"`
 	Starred            bool                 `json:"starred,omitempty"`
-	SendAt             *time.Time           `json:"send_at,omitempty"`
+	SendAt             time.Time            `json:"send_at,omitempty"`
 	CustomMetrics      []string             `json:"custom_metrics,omitempty"`
 	UIDs               []string             `json:"uids"`
 	Tags               []string             `json:"tags"`
@@ -37,6 +37,14 @@ type Notification struct {
 	ScheduledCount     int64                `json:"scheduled_count,omitempty"`
 	Scheduled          bool                 `json:"scheduled,omitempty"`
 	Cancelled          bool                 `json:"cancelled,omitempty"`
+}
+
+// NotificationCreateResponse describes the response to creating a notification.
+type NotificationCreateResponse struct {
+	ID        int64      `json:"id"`
+	Scheduled int64      `json:"scheduled,omitempty"`
+	UIDs      []string   `json:"uids,omitempty"`
+	SendAt    time.Time  `json:"send_at,omitempty"`
 }
 
 // NotificationActionParams represents a notification action button in create payloads.
@@ -67,14 +75,6 @@ type NotificationCreateParams struct {
 	CustomMetrics      *[]string             `json:"custom_metrics,omitempty"`
 	UIDs               *[]string             `json:"uids"`
 	Tags               *[]string             `json:"tags"`
-}
-
-// NotificationCreateResponse describes the response to creating a notification.
-type NotificationCreateResponse struct {
-	ID        int64      `json:"id"`
-	Scheduled int64      `json:"scheduled,omitempty"`
-	UIDs      []string   `json:"uids,omitempty"`
-	SendAt    *time.Time `json:"send_at,omitempty"`
 }
 
 // NotificationListParams controls notification listing.

@@ -11,7 +11,7 @@ type Subscription struct {
 	Auth        string     `json:"auth,omitempty"`
 	UID         string     `json:"uid,omitempty"`
 	Tags        []string   `json:"tags,omitempty"`
-	LastClickAt *time.Time `json:"last_click_at,omitempty"`
+	LastClickAt time.Time  `json:"last_click_at,omitempty"`
 	CreatedAt   time.Time  `json:"created_at,omitempty"`
 }
 
