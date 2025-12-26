@@ -4,16 +4,16 @@ import "time"
 
 // Sender represents a Pushpad sender.
 type Sender struct {
-	ID              int64      `json:"id,omitempty"`
-	Name            string     `json:"name,omitempty"`
-	VAPIDPrivateKey string     `json:"vapid_private_key,omitempty"`
-	VAPIDPublicKey  string     `json:"vapid_public_key,omitempty"`
-	CreatedAt       time.Time  `json:"created_at,omitempty"`
+	ID              int64      `json:"id"`
+	Name            string     `json:"name"`
+	VAPIDPrivateKey string     `json:"vapid_private_key"`
+	VAPIDPublicKey  string     `json:"vapid_public_key"`
+	CreatedAt       time.Time  `json:"created_at"`
 }
 
 // SenderCreateParams is the payload to create a sender.
 type SenderCreateParams struct {
-	Name            *string `json:"name"`
+	Name            *string `json:"name,omitempty"`
 	VAPIDPrivateKey *string `json:"vapid_private_key,omitempty"`
 	VAPIDPublicKey  *string `json:"vapid_public_key,omitempty"`
 }

@@ -4,21 +4,21 @@ import "time"
 
 // Subscription represents a Pushpad subscription.
 type Subscription struct {
-	ID          int64      `json:"id,omitempty"`
-	ProjectID   int64      `json:"project_id,omitempty"`
-	Endpoint    string     `json:"endpoint,omitempty"`
-	P256DH      string     `json:"p256dh,omitempty"`
-	Auth        string     `json:"auth,omitempty"`
-	UID         string     `json:"uid,omitempty"`
-	Tags        []string   `json:"tags,omitempty"`
-	LastClickAt time.Time  `json:"last_click_at,omitempty"`
-	CreatedAt   time.Time  `json:"created_at,omitempty"`
+	ID          int64      `json:"id"`
+	ProjectID   int64      `json:"project_id"`
+	Endpoint    string     `json:"endpoint"`
+	P256DH      string     `json:"p256dh"`
+	Auth        string     `json:"auth"`
+	UID         string     `json:"uid"`
+	Tags        []string   `json:"tags"`
+	LastClickAt time.Time  `json:"last_click_at"`
+	CreatedAt   time.Time  `json:"created_at"`
 }
 
 // SubscriptionCreateParams is the payload to create a subscription.
 type SubscriptionCreateParams struct {
 	ProjectID *int64    `json:"-"`
-	Endpoint  *string   `json:"endpoint"`
+	Endpoint  *string   `json:"endpoint,omitempty"`
 	P256DH    *string   `json:"p256dh,omitempty"`
 	Auth      *string   `json:"auth,omitempty"`
 	UID       *string   `json:"uid,omitempty"`

@@ -4,23 +4,23 @@ import "time"
 
 // Project represents a Pushpad project.
 type Project struct {
-	ID                           int64      `json:"id,omitempty"`
-	SenderID                     int64      `json:"sender_id,omitempty"`
-	Name                         string     `json:"name,omitempty"`
-	Website                      string     `json:"website,omitempty"`
-	IconURL                      string     `json:"icon_url,omitempty"`
-	BadgeURL                     string     `json:"badge_url,omitempty"`
-	NotificationsTTL             int64      `json:"notifications_ttl,omitempty"`
-	NotificationsRequireInteract bool       `json:"notifications_require_interaction,omitempty"`
-	NotificationsSilent          bool       `json:"notifications_silent,omitempty"`
-	CreatedAt                    time.Time  `json:"created_at,omitempty"`
+	ID                           int64      `json:"id"`
+	SenderID                     int64      `json:"sender_id"`
+	Name                         string     `json:"name"`
+	Website                      string     `json:"website"`
+	IconURL                      string     `json:"icon_url"`
+	BadgeURL                     string     `json:"badge_url"`
+	NotificationsTTL             int64      `json:"notifications_ttl"`
+	NotificationsRequireInteract bool       `json:"notifications_require_interaction"`
+	NotificationsSilent          bool       `json:"notifications_silent"`
+	CreatedAt                    time.Time  `json:"created_at"`
 }
 
 // ProjectCreateParams is the payload to create a project.
 type ProjectCreateParams struct {
-	SenderID                     *int64  `json:"sender_id"`
-	Name                         *string `json:"name"`
-	Website                      *string `json:"website"`
+	SenderID                     *int64  `json:"sender_id,omitempty"`
+	Name                         *string `json:"name,omitempty"`
+	Website                      *string `json:"website,omitempty"`
 	IconURL                      *string `json:"icon_url,omitempty"`
 	BadgeURL                     *string `json:"badge_url,omitempty"`
 	NotificationsTTL             *int64  `json:"notifications_ttl,omitempty"`
