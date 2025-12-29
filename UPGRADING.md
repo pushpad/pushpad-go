@@ -4,8 +4,6 @@ This version is a major rewrite of the library and adds support for the full RES
 
 This version has some breaking changes:
 
-- Module and packages include the version in their name. Use `github.com/pushpad/pushpad-go/v1`
- instead of `github.com/pushpad/pushpad-go`.
 - When you call `pushpad.Configure` the `projectID` argument is now a `int64` instead of a `string`.
 - `pushpad.Notification` is now used only for some API responses, but not for API requests. If you want to create / send a notification, use `notification.Create(&notificationCreateParams)`.
 - All fields in `notification.NotificationCreateParams` are pointers, and you can use helpers like `pushpad.String`, `pushpad.StringSlice`, `pushpad.Int64`, etc. to create the pointers easily. For example, when you create the params for a notification, use `Body: pushpad.String("Hello")` instead of `Body: "Hello"`.

@@ -3,7 +3,7 @@ package sender
 import (
 	"fmt"
 
-	"github.com/pushpad/pushpad-go/v1"
+	"github.com/pushpad/pushpad-go"
 )
 
 func List(params *SenderListParams) ([]Sender, error) {

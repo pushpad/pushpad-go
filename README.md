@@ -1,6 +1,6 @@
 # Pushpad - Web Push Notifications
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/pushpad/pushpad-go)](https://pkg.go.dev/github.com/pushpad/pushpad-go/v1)
+[![Go Reference](https://pkg.go.dev/badge/github.com/pushpad/pushpad-go)](https://pkg.go.dev/github.com/pushpad/pushpad-go)
 ![Build Status](https://github.com/pushpad/pushpad-go/workflows/CI/badge.svg)
  
 [Pushpad](https://pushpad.xyz) is a service for sending push notifications from websites and web apps. It uses the **Push API**, which is a standard supported by all major browsers (Chrome, Firefox, Opera, Edge, Safari).
@@ -12,18 +12,18 @@ The notifications are delivered in real time even when the users are not on your
 You can get the Go module:
 
 ```go
-go get github.com/pushpad/pushpad-go/v1
+go get github.com/pushpad/pushpad-go
 ```
 
 Then import the packages:
 
 ```go
 import (
-  "github.com/pushpad/pushpad-go/v1"
-  "github.com/pushpad/pushpad-go/v1/notification"
-  "github.com/pushpad/pushpad-go/v1/project"
-  "github.com/pushpad/pushpad-go/v1/sender"
-  "github.com/pushpad/pushpad-go/v1/subscription"
+  "github.com/pushpad/pushpad-go"
+  "github.com/pushpad/pushpad-go/notification"
+  "github.com/pushpad/pushpad-go/project"
+  "github.com/pushpad/pushpad-go/sender"
+  "github.com/pushpad/pushpad-go/subscription"
 )
 ```
 

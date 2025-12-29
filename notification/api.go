@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/pushpad/pushpad-go/v1"
+	"github.com/pushpad/pushpad-go"
 )
 
 func List(params *NotificationListParams) ([]Notification, error) {
