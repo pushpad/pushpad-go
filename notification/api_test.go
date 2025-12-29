@@ -197,7 +197,23 @@ func TestNotificationWithUIDs(t *testing.T) {
 	}
 
 	got := string(notificationJSON)
-	want := `{"body":"Hello user1","uids":["user1"],"tags":null}`
+	want := `{"body":"Hello user1","uids":["user1"]}`
+
+	if got != want {
+		t.Fatalf("got: %q, want: %q", got, want)
+	}
+}
+
+func TestNotificationWithEmptyUIDs(t *testing.T) {
+	n := NotificationCreateParams{Body: pushpad.String("Hello user1"), UIDs: pushpad.StringSlice([]string{})}
+	notificationJSON, err := json.Marshal(n)
+
+	if err != nil {
+		t.Fatalf("got an error: %s", err)
+	}
+
+	got := string(notificationJSON)
+	want := `{"body":"Hello user1","uids":[]}`
 
 	if got != want {
 		t.Fatalf("got: %q, want: %q", got, want)
@@ -213,7 +229,23 @@ func TestNotificationWithTags(t *testing.T) {
 	}
 
 	got := string(notificationJSON)
-	want := `{"body":"Hello tag1","uids":null,"tags":["tag1"]}`
+	want := `{"body":"Hello tag1","tags":["tag1"]}`
+
+	if got != want {
+		t.Fatalf("got: %q, want: %q", got, want)
+	}
+}
+
+func TestNotificationWithEmptyTags(t *testing.T) {
+	n := NotificationCreateParams{Body: pushpad.String("Hello tag1"), Tags: pushpad.StringSlice([]string{})}
+	notificationJSON, err := json.Marshal(n)
+
+	if err != nil {
+		t.Fatalf("got an error: %s", err)
+	}
+
+	got := string(notificationJSON)
+	want := `{"body":"Hello tag1","tags":[]}`
 
 	if got != want {
 		t.Fatalf("got: %q, want: %q", got, want)

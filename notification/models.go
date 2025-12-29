@@ -73,8 +73,8 @@ type NotificationCreateParams struct {
 	Starred            *bool                 `json:"starred,omitempty"`
 	SendAt             *time.Time            `json:"send_at,omitempty"`
 	CustomMetrics      *[]string             `json:"custom_metrics,omitempty"`
-	UIDs               *[]string             `json:"uids"`
-	Tags               *[]string             `json:"tags"`
+	UIDs               *[]string             `json:"uids,omitempty"`
+	Tags               *[]string             `json:"tags,omitempty"`
 }
 
 // NotificationListParams controls notification listing.
