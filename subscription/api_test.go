@@ -67,14 +67,13 @@ func TestCountSubscriptions(t *testing.T) {
 	defer gock.Off()
 
 	gock.New("https://pushpad.xyz").
-		Get("/api/v1/projects/123/subscriptions").
+		Head("/api/v1/projects/123/subscriptions").
 		MatchParam("uids[]", "u1").
 		MatchParam("uids[]", "u2").
 		MatchParam("tags[]", "tag1").
 		MatchHeader("Authorization", "Bearer TOKEN").
 		Reply(200).
-		SetHeader("X-Total-Count", "2").
-		BodyString(`[]`)
+		SetHeader("X-Total-Count", "2")
 
 	pushpad.Configure("TOKEN", 0)
 	params := &SubscriptionCountParams{

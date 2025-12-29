@@ -64,7 +64,7 @@ func Count(params *SubscriptionCountParams) (int64, error) {
 			query.Add("tags[]", tag)
 		}
 	}
-	res, err := pushpad.DoRequest("GET", fmt.Sprintf("/projects/%d/subscriptions", projectID), query, nil, []int{200}, nil)
+	res, err := pushpad.DoRequest("HEAD", fmt.Sprintf("/projects/%d/subscriptions", projectID), query, nil, []int{200}, nil)
 	if err != nil {
 		return 0, err
 	}
