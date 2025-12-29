@@ -285,25 +285,25 @@ err := notification.Cancel(scheduled.ID, nil)
 You can retrieve the number of subscriptions for a given project, optionally filtered by `Tags` or `UIDs`:
 
 ```go
-_, totalCount, err := subscription.List(&subscription.SubscriptionListParams{})
+totalCount, err := subscription.Count(&subscription.SubscriptionCountParams{})
 fmt.Println(totalCount) // => 100
 
-_, totalCount, err = subscription.List(&subscription.SubscriptionListParams{
+totalCount, err = subscription.Count(&subscription.SubscriptionCountParams{
   UIDs: pushpad.StringSlice([]string{"user1"}),
 })
 fmt.Println(totalCount) // => 2
 
-_, totalCount, err = subscription.List(&subscription.SubscriptionListParams{
+totalCount, err = subscription.Count(&subscription.SubscriptionCountParams{
   Tags: pushpad.StringSlice([]string{"sports"}),
 })
 fmt.Println(totalCount) // => 10
 
-_, totalCount, err = subscription.List(&subscription.SubscriptionListParams{
+totalCount, err = subscription.Count(&subscription.SubscriptionCountParams{
   Tags: pushpad.StringSlice([]string{"sports && travel"}),
 })
 fmt.Println(totalCount) // => 5
 
-_, totalCount, err = subscription.List(&subscription.SubscriptionListParams{
+totalCount, err = subscription.Count(&subscription.SubscriptionCountParams{
   UIDs: pushpad.StringSlice([]string{"user1"}),
   Tags: pushpad.StringSlice([]string{"sports && travel"}),
 })
@@ -315,21 +315,21 @@ fmt.Println(totalCount) // => 1
 You can retrieve the subscriptions for a given project, optionally filtered by `Tags` or `UIDs`:
 
 ```go
-subscriptions, _, err := subscription.List(&subscription.SubscriptionListParams{})
+subscriptions, err := subscription.List(&subscription.SubscriptionListParams{})
 
-subscriptions, _, err = subscription.List(&subscription.SubscriptionListParams{
+subscriptions, err = subscription.List(&subscription.SubscriptionListParams{
   UIDs: pushpad.StringSlice([]string{"user1"}),
 })
 
-subscriptions, _, err = subscription.List(&subscription.SubscriptionListParams{
+subscriptions, err = subscription.List(&subscription.SubscriptionListParams{
   Tags: pushpad.StringSlice([]string{"sports"}),
 })
 
-subscriptions, _, err = subscription.List(&subscription.SubscriptionListParams{
+subscriptions, err = subscription.List(&subscription.SubscriptionListParams{
   Tags: pushpad.StringSlice([]string{"sports && travel"}),
 })
 
-subscriptions, _, err = subscription.List(&subscription.SubscriptionListParams{
+subscriptions, err = subscription.List(&subscription.SubscriptionListParams{
   UIDs: pushpad.StringSlice([]string{"user1"}),
   Tags: pushpad.StringSlice([]string{"sports && travel"}),
 })
@@ -338,7 +338,7 @@ subscriptions, _, err = subscription.List(&subscription.SubscriptionListParams{
 The REST API paginates the result set. You can pass `Page` and `PerPage` parameters to get the full list in multiple requests.
 
 ```go
-subscriptions, _, err := subscription.List(&subscription.SubscriptionListParams{
+subscriptions, err := subscription.List(&subscription.SubscriptionListParams{
   Page: pushpad.Int64(2),
 })
 ```
@@ -356,7 +356,7 @@ Usually you add data, like user IDs and tags, to the push subscriptions using th
 However you can also update the subscription data from your server:
 
 ```go
-subscriptions, _, err := subscription.List(&subscription.SubscriptionListParams{
+subscriptions, err := subscription.List(&subscription.SubscriptionListParams{
   UIDs: pushpad.StringSlice([]string{"user1"}),
 })
 

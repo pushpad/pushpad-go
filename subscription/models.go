@@ -41,6 +41,13 @@ type SubscriptionListParams struct {
 	Tags      *[]string
 }
 
+// SubscriptionCountParams controls subscription counts.
+type SubscriptionCountParams struct {
+	ProjectID *int64
+	UIDs      *[]string
+	Tags      *[]string
+}
+
 // SubscriptionGetParams controls subscription fetches.
 type SubscriptionGetParams struct {
 	ProjectID *int64

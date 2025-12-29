@@ -8,13 +8,13 @@ import (
 	"github.com/pushpad/pushpad-go/v1"
 )
 
-func List(params *SubscriptionListParams) ([]Subscription, int64, error) {
+func List(params *SubscriptionListParams) ([]Subscription, error) {
 	if params == nil {
 		params = &SubscriptionListParams{}
 	}
 	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 
 	query := url.Values{}
@@ -36,9 +36,37 @@ func List(params *SubscriptionListParams) ([]Subscription, int64, error) {
 	}
 
 	var subscriptions []Subscription
-	res, err := pushpad.DoRequest("GET", fmt.Sprintf("/projects/%d/subscriptions", projectID), query, nil, []int{200}, &subscriptions)
+	_, err = pushpad.DoRequest("GET", fmt.Sprintf("/projects/%d/subscriptions", projectID), query, nil, []int{200}, &subscriptions)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
+	}
+
+	return subscriptions, nil
+}
+
+func Count(params *SubscriptionCountParams) (int64, error) {
+	if params == nil {
+		params = &SubscriptionCountParams{}
+	}
+	projectID, err := pushpad.ResolveProjectID(params.ProjectID)
+	if err != nil {
+		return 0, err
+	}
+
+	query := url.Values{}
+	if params.UIDs != nil {
+		for _, uid := range *params.UIDs {
+			query.Add("uids[]", uid)
+		}
+	}
+	if params.Tags != nil {
+		for _, tag := range *params.Tags {
+			query.Add("tags[]", tag)
+		}
+	}
+	res, err := pushpad.DoRequest("GET", fmt.Sprintf("/projects/%d/subscriptions", projectID), query, nil, []int{200}, nil)
+	if err != nil {
+		return 0, err
 	}
 
 	var totalCount int64
@@ -48,7 +76,7 @@ func List(params *SubscriptionListParams) ([]Subscription, int64, error) {
 		}
 	}
 
-	return subscriptions, totalCount, nil
+	return totalCount, nil
 }
 
 func Create(params *SubscriptionCreateParams) (*Subscription, error) {

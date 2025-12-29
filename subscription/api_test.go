@@ -32,12 +32,9 @@ func TestListSubscriptions(t *testing.T) {
 		UIDs:      pushpad.StringSlice([]string{"u1", "u2"}),
 		Tags:      pushpad.StringSlice([]string{"tag1"}),
 	}
-	subscriptions, total, err := List(params)
+	subscriptions, err := List(params)
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
-	}
-	if total != 2 {
-		t.Errorf("expected total count 2, got %d", total)
 	}
 	if len(subscriptions) != 2 {
 		t.Fatalf("expected 2 subscriptions, got %d", len(subscriptions))
@@ -57,15 +54,40 @@ func TestListSubscriptionsNoOptions(t *testing.T) {
 		BodyString(`[]`)
 
 	pushpad.Configure("TOKEN", 0)
-	subscriptions, total, err := List(&SubscriptionListParams{ProjectID: pushpad.Int64(123)})
+	subscriptions, err := List(&SubscriptionListParams{ProjectID: pushpad.Int64(123)})
 	if err != nil {
 		t.Fatalf("expected no error, got %s", err)
 	}
-	if total != 0 {
-		t.Errorf("expected total count 0, got %d", total)
-	}
 	if len(subscriptions) != 0 {
 		t.Fatalf("expected 0 subscriptions, got %d", len(subscriptions))
+	}
+}
+
+func TestCountSubscriptions(t *testing.T) {
+	defer gock.Off()
+
+	gock.New("https://pushpad.xyz").
+		Get("/api/v1/projects/123/subscriptions").
+		MatchParam("uids[]", "u1").
+		MatchParam("uids[]", "u2").
+		MatchParam("tags[]", "tag1").
+		MatchHeader("Authorization", "Bearer TOKEN").
+		Reply(200).
+		SetHeader("X-Total-Count", "2").
+		BodyString(`[]`)
+
+	pushpad.Configure("TOKEN", 0)
+	params := &SubscriptionCountParams{
+		ProjectID: pushpad.Int64(123),
+		UIDs:      pushpad.StringSlice([]string{"u1", "u2"}),
+		Tags:      pushpad.StringSlice([]string{"tag1"}),
+	}
+	total, err := Count(params)
+	if err != nil {
+		t.Fatalf("expected no error, got %s", err)
+	}
+	if total != 2 {
+		t.Errorf("expected total count 2, got %d", total)
 	}
 }
 
