@@ -100,7 +100,7 @@ n := notification.NotificationCreateParams {
 
   // optional, add the notification to custom categories for stats aggregation
   // see https://pushpad.xyz/docs/monitoring
-  CustomMetrics: pushpad.Strings([]string{"examples", "another_metric"}), // up to 3 metrics per notification
+  CustomMetrics: pushpad.StringSlice([]string{"examples", "another_metric"}), // up to 3 metrics per notification
 }
 
 res, err := notification.Create(&n)
@@ -109,27 +109,27 @@ res, err := notification.Create(&n)
 // You can use UIDs and Tags for sending the notification only to a specific audience...
 
 // deliver to a user
-n := notification.NotificationCreateParams { Body: pushpad.String("Hi user1"), UIDs: pushpad.Strings([]string{"user1"}) }
+n := notification.NotificationCreateParams { Body: pushpad.String("Hi user1"), UIDs: pushpad.StringSlice([]string{"user1"}) }
 res, err := notification.Create(&n)
 
 // deliver to a group of users
-n := notification.NotificationCreateParams { Body: pushpad.String("Hi users"), UIDs: pushpad.Strings([]string{"user1","user2","user3"}) }
+n := notification.NotificationCreateParams { Body: pushpad.String("Hi users"), UIDs: pushpad.StringSlice([]string{"user1","user2","user3"}) }
 res, err := notification.Create(&n)
 
 // deliver to some users only if they have a given preference
 // e.g. only "users" who have a interested in "events" will be reached
-n := notification.NotificationCreateParams { Body: pushpad.String("New event"), UIDs: pushpad.Strings([]string{"user1","user2"}), Tags: pushpad.Strings([]string{"events"}) }
+n := notification.NotificationCreateParams { Body: pushpad.String("New event"), UIDs: pushpad.StringSlice([]string{"user1","user2"}), Tags: pushpad.StringSlice([]string{"events"}) }
 res, err := notification.Create(&n)
 
 // deliver to segments
 // e.g. any subscriber that has the tag "segment1" OR "segment2"
-n := notification.NotificationCreateParams { Body: pushpad.String("Example"), Tags: pushpad.Strings([]string{"segment1", "segment2"}) }
+n := notification.NotificationCreateParams { Body: pushpad.String("Example"), Tags: pushpad.StringSlice([]string{"segment1", "segment2"}) }
 res, err := notification.Create(&n)
 
 // you can use boolean expressions
 // they can include parentheses and the operators !, &&, || (from highest to lowest precedence)
 // https://pushpad.xyz/docs/tags
-n := notification.NotificationCreateParams { Body: pushpad.String("Example"), Tags: pushpad.Strings([]string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"}) }
+n := notification.NotificationCreateParams { Body: pushpad.String("Example"), Tags: pushpad.StringSlice([]string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"}) }
 res, err := notification.Create(&n)
 
 // deliver to everyone

@@ -22,7 +22,7 @@ func Time(value time.Time) *time.Time {
 	return &value
 }
 
-// Strings returns a pointer to a string slice.
-func Strings(value []string) *[]string {
+// StringSlice returns a pointer to a slice of strings.
+func StringSlice(value []string) *[]string {
 	return &value
 }

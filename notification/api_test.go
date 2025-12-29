@@ -108,9 +108,9 @@ func TestCreateNotificationWithAllFields(t *testing.T) {
 		},
 		Starred:       pushpad.Bool(false),
 		SendAt:        pushpad.Time(sendAt),
-		CustomMetrics: pushpad.Strings([]string{"metric1", "metric2"}),
-		UIDs:          pushpad.Strings([]string{"uid0", "uid1", "uidN"}),
-		Tags:          pushpad.Strings([]string{"tag1", "tagA && !tagB"}),
+		CustomMetrics: pushpad.StringSlice([]string{"metric1", "metric2"}),
+		UIDs:          pushpad.StringSlice([]string{"uid0", "uid1", "uidN"}),
+		Tags:          pushpad.StringSlice([]string{"tag1", "tagA && !tagB"}),
 	}
 
 	notificationJSON, err := json.Marshal(params)
@@ -189,7 +189,7 @@ func TestNotificationSend(t *testing.T) {
 }
 
 func TestNotificationWithUIDs(t *testing.T) {
-	n := NotificationCreateParams{Body: pushpad.String("Hello user1"), UIDs: pushpad.Strings([]string{"user1"})}
+	n := NotificationCreateParams{Body: pushpad.String("Hello user1"), UIDs: pushpad.StringSlice([]string{"user1"})}
 	notificationJSON, err := json.Marshal(n)
 
 	if err != nil {
@@ -205,7 +205,7 @@ func TestNotificationWithUIDs(t *testing.T) {
 }
 
 func TestNotificationWithTags(t *testing.T) {
-	n := NotificationCreateParams{Body: pushpad.String("Hello tag1"), Tags: pushpad.Strings([]string{"tag1"})}
+	n := NotificationCreateParams{Body: pushpad.String("Hello tag1"), Tags: pushpad.StringSlice([]string{"tag1"})}
 	notificationJSON, err := json.Marshal(n)
 
 	if err != nil {

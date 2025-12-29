@@ -29,8 +29,8 @@ func TestListSubscriptions(t *testing.T) {
 		ProjectID: pushpad.Int64(123),
 		Page:      pushpad.Int64(1),
 		PerPage:   pushpad.Int64(20),
-		UIDs:      pushpad.Strings([]string{"u1", "u2"}),
-		Tags:      pushpad.Strings([]string{"tag1"}),
+		UIDs:      pushpad.StringSlice([]string{"u1", "u2"}),
+		Tags:      pushpad.StringSlice([]string{"tag1"}),
 	}
 	subscriptions, total, err := List(params)
 	if err != nil {
@@ -98,7 +98,7 @@ func TestCreateSubscriptionWithAllFields(t *testing.T) {
 		P256DH:    pushpad.String("BCQVDTlYWdl05lal3lG5SKr3VxTrEWpZErbkxWrzknHrIKFwihDoZpc_2sH6Sh08h-CacUYI-H8gW4jH-uMYZQ4="),
 		Auth:      pushpad.String("cdKMlhgVeSPzCXZ3V7FtgQ=="),
 		UID:       pushpad.String("user1"),
-		Tags:      pushpad.Strings([]string{"tag1", "tag2"}),
+		Tags:      pushpad.StringSlice([]string{"tag1", "tag2"}),
 	}
 
 	subscriptionJSON, err := json.Marshal(params)
