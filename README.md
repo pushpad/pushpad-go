@@ -11,7 +11,7 @@ The notifications are delivered in real time even when the users are not on your
 
 You can get the Go module:
 
-```go
+```bash
 go get github.com/pushpad/pushpad-go
 ```
 
@@ -70,7 +70,7 @@ fmt.Printf("User ID Signature: %s", s)
 Use `notification.Create()` (or the `Send()` alias) to create and send a notification:
 
 ```go
-n := notification.NotificationCreateParams {
+n := notification.NotificationCreateParams{
   // required, the main content of the notification
   Body: pushpad.String("Hello world!"),
 
@@ -134,54 +134,54 @@ res, err := notification.Create(&n)
 // You can use UIDs and Tags for sending the notification only to a specific audience...
 
 // deliver to a user
-n := notification.NotificationCreateParams {
+n := notification.NotificationCreateParams{
   Body: pushpad.String("Hi user1"),
-  UIDs: pushpad.StringSlice([]string{"user1"})
+  UIDs: pushpad.StringSlice([]string{"user1"}),
 }
 res, err := notification.Create(&n)
 
 // deliver to a group of users
-n := notification.NotificationCreateParams {
+n := notification.NotificationCreateParams{
   Body: pushpad.String("Hi users"),
-  UIDs: pushpad.StringSlice([]string{"user1","user2","user3"})
+  UIDs: pushpad.StringSlice([]string{"user1","user2","user3"}),
 }
 res, err := notification.Create(&n)
 
 // deliver to some users only if they have a given preference
 // e.g. only "users" who have a interested in "events" will be reached
-n := notification.NotificationCreateParams {
+n := notification.NotificationCreateParams{
   Body: pushpad.String("New event"),
   UIDs: pushpad.StringSlice([]string{"user1","user2"}),
-  Tags: pushpad.StringSlice([]string{"events"})
+  Tags: pushpad.StringSlice([]string{"events"}),
 }
 res, err := notification.Create(&n)
 
 // deliver to segments
 // e.g. any subscriber that has the tag "segment1" OR "segment2"
-n := notification.NotificationCreateParams {
+n := notification.NotificationCreateParams{
   Body: pushpad.String("Example"),
-  Tags: pushpad.StringSlice([]string{"segment1", "segment2"})
+  Tags: pushpad.StringSlice([]string{"segment1", "segment2"}),
 }
 res, err := notification.Create(&n)
 
 // you can use boolean expressions
 // they can include parentheses and the operators !, &&, || (from highest to lowest precedence)
 // https://pushpad.xyz/docs/tags
-n := notification.NotificationCreateParams {
+n := notification.NotificationCreateParams{
   Body: pushpad.String("Example"),
-  Tags: pushpad.StringSlice([]string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"})
+  Tags: pushpad.StringSlice([]string{"zip_code:28865 && !optout:local_events || friend_of:Organizer123"}),
 }
 res, err := notification.Create(&n)
 
-n := notification.NotificationCreateParams {
+n := notification.NotificationCreateParams{
   Body: pushpad.String("Example"),
-  Tags: pushpad.StringSlice([]string{"tag1 && tag2", "tag3"}) // equal to 'tag1 && tag2 || tag3'
+  Tags: pushpad.StringSlice([]string{"tag1 && tag2", "tag3"}), // equal to 'tag1 && tag2 || tag3'
 }
 res, err := notification.Create(&n)
 
 // deliver to everyone
-n := notification.NotificationCreateParams {
-  Body: pushpad.String("Hello everybody")
+n := notification.NotificationCreateParams{
+  Body: pushpad.String("Hello everybody"),
 }
 res, err := notification.Create(&n)
 ```
@@ -476,7 +476,9 @@ err = sender.Delete(existingSender.ID, nil)
 API requests can return errors, described by a `pushpad.APIError` that exposes the HTTP status code and response body. Network issues and other errors return a generic error.
 
 ```go
-n := notification.NotificationCreateParams{Body: pushpad.String("Hello")}
+n := notification.NotificationCreateParams{
+  Body: pushpad.String("Hello"),
+}
 _, err := notification.Create(&n)
 if err != nil {
   var apiErr *pushpad.APIError
